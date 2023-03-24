@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="container-fluid">
+
+      <!-- Content Row -->
+    <div class="row">
+    <!-- Content Column -->
+        <div class="col-lg-12 col-md-12 mb-4">
+        <!-- Project Card Example -->
+        <div class="card shadow mb-4">
+        <div class="card-header py-6" align="center">
+            <h4 class="m-0 font-weight-bold text-primary" >Item Type</h4>
+        </div>
+        <div class="card-body" align="center">
+            <form method="POST" id="addUom" action="{% url 'item-type' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-4">
+                        <input type="text" name="name"  class="form-control" placeholder="Enter item Type name" required>
+                    </div>
+                    <div class="col-6">
+                        <input type="text" name="description"  class="form-control" placeholder="Enter item Type description">
+                    </div>
+                    <div class="col-2">
+                        <button class="btn btn-success">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+      <!-- Content Row -->
+    <div class="row">
+    <!-- Content Column -->
+        <div class="col-lg-12 col-md-12 mb-4">
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+            <div class="card-header py-6">
+                <h4 class="m-0 font-weight-bold text-center text-primary">Item Type List</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Code</th>
+                        <th>Name</th>
+                        <th>Description</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for val in item_types %}
+                        <tr>
+                            <th>{{ forloop.counter }}</th>
+                            <th>{{ val.name }}</th>
+                            <th>{{ val.description }}</th>
+                            <th>{{ val.status }}</th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Update UoM</h3>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form  method="post" action="" class="form-sample">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="name" required="required"
+                                               class="form-control customerName" placeholder="name"/>
+                                        <input type="hidden" class="customerId" name="id">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Address</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="address" required="required"
+                                               class="form-control customerAddress" placeholder="address"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Phone</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="phone" required="required"
+                                               class="form-control customerPhone" placeholder="phone"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" name="email"
+                                               class="form-control customerEmail" placeholder="email"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Remarks</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" name="remarks"
+                                               class="form-control customerRemarks" placeholder="remarks"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Status</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control customerStatus" name="status">
+                                            <option value="1">Active</option>
+                                            <option value="0">Deactive</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <div class="col-sm-6">
+                                    </div>
+                                    <div class="col-sm-6">
+                                       <button type="submit" class="btn btn-success mr-2 col-md-4">Submit</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+    console.log('bangladesh!');
+    $(".editCustomerBtn").click(function(){
+        $.ajax({
+            url : '',
+            type : 'POST',
+            data : {id : $(this).data('id')},
+            dataType : 'json',
+            success : function(json){
+                console.log(json);
+                $('.customerName').val(json['getCustomerById'][0]['name']);
+                $('.customerId').val(json['getCustomerById'][0]['id']);
+                $('.customerAddress').val(json['getCustomerById'][0]['address']);
+                $('.customerPhone').val(json['getCustomerById'][0]['phone']);
+                $('.customerEmail').val(json['getCustomerById'][0]['email']);
+                $('.customerRemarks').val(json['getCustomerById'][0]['remarks']);
+                $('.customerStatus').val(json['getCustomerById'][0]['status']);
+            },
+        });
+    });
+</script>
+
+{% endblock %}
+
+
