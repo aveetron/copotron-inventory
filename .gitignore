@@ -1,3 +1,8 @@
 venv
 /venv
 .idea
+core/__pycache__/
+/core/__pycache__/
+item/migrations
+/item/migrations/
+item/__pycache__
