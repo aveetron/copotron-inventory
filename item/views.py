@@ -42,6 +42,17 @@ class ItemTypeView(View):
 class ItemTypeDetailsView(View):
     form_class = ItemTypeForm
 
+    def get(self, request, id):
+        item_type = ItemType.objects.filter(id=id).last()
+        if not item_type:
+            message = "There is no item type!"
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+        context = {"item_type": item_type}
+        pass
+
+
     def put(self, request, id):
         payload = request.POST
         item_type = ItemType.objects.filter(id=id).last()
