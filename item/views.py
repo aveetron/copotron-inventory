@@ -39,6 +39,38 @@ class ItemTypeView(View):
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
+class ItemTypeDetailsView(View):
+    form_class = ItemTypeForm
+
+    def put(self, request, id):
+        payload = request.POST
+        item_type = ItemType.objects.filter(id=id).last()
+        if not item_type:
+            message = "There is no item type!"
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+        item_type_serializer = self.form_class(item_type, data=payload)
+        if item_type_serializer.is_valid():
+            message = "item type updated"
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        else:
+            message = item_type_serializer.errors
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+    def delete(self, request, id):
+        item_type = ItemType.objects.filter(id=id).last()
+        if not item_type:
+            message = "There is no item type!"
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+        item_type.delete()
+        message = "item deleted!"
+        messages.success(request, message)
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
 class ItemView(View):
