@@ -6,3 +6,5 @@ core/__pycache__/
 item/migrations
 /item/migrations/
 item/__pycache__
+/store/__pycache__
+/store/migrations
