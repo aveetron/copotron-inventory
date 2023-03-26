@@ -39,6 +39,8 @@ class ItemTypeView(View):
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
+
+
 class ItemView(View):
     form_class = ItemForm
     template_name = "item/items.html"
@@ -54,8 +56,12 @@ class ItemView(View):
         item_form = self.form_class(item_data)
         if item_form.is_valid():
             item_form.save()
-            print("pass")
+            message = "Item created successfully."
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
         else:
-            print("fail")
+            message = item_form.errors
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
