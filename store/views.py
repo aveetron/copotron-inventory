@@ -4,10 +4,7 @@ from django.views.generic import View
 from django.contrib import messages
 from .models import Store
 from .forms import StoreForm
-# Create your views here.
-
-
-class storeView(View):
+class StoreView(View):
     form_class = StoreForm
     template_name = "store.html"
 
