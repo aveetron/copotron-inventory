@@ -4,7 +4,13 @@ from django.views.generic import View
 from django.contrib import messages
 from .models import Store
 from .forms import StoreForm
-class StoreView(View):
+from django.views.decorators.csrf import csrf_exempt
+# Create your views here.
+from django.utils.decorators import method_decorator
+from django.http import JsonResponse
+
+
+class storeView(View):
     form_class = StoreForm
     template_name = "store.html"
 
@@ -28,6 +34,67 @@ class StoreView(View):
                 messages.warning(request, message)
                 return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
             message = "store created"
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        except Exception as e:
+            message = e.args[0]
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+class editStore(View):
+    form_class = StoreForm
+    template_name = "store.html"
+
+    @method_decorator(csrf_exempt)
+    def post(self, request):
+        payload = request.POST
+        print(request.POST.get("id"))
+        store = Store.objects.filter(id=request.POST.get("id")).values()
+        print(store)
+        # store = Store.objects.get(id=request.POST.get("id")).values()
+        # print(store)
+        return JsonResponse({'store': list(store)})
+
+
+class updateStore(View):
+    form_class = StoreForm
+    template_name = "store.html"
+
+    def post(self, request):
+        try:
+            payload = request.POST
+            store = Store.objects.get(id=payload.get("id"))
+            store_serializer = self.form_class(payload, instance=store)
+            if store_serializer.is_valid():
+                if Store.objects.filter(name__iexact=store_serializer.data["name"]).exclude(id=payload.get("id")):
+                    message = "store already exists"
+                    messages.warning(request, message)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+                store_serializer.save()
+            else:
+                message = store_serializer.errors
+                messages.warning(request, message)
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            message = "store updated"
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        except Exception as e:
+            message = e.args[0]
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+class deleteStore(View):
+    form_class = StoreForm
+    template_name = "store.html"
+
+    def post(self, request):
+        try:
+            payload = request.POST
+            store = Store.objects.get(id=payload.get("id"))
+            store.delete()
+            message = "store deleted"
             messages.success(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
         except Exception as e:
