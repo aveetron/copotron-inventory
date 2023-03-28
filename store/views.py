@@ -10,7 +10,7 @@ from django.utils.decorators import method_decorator
 from django.http import JsonResponse
 
 
-class storeView(View):
+class StoreView(View):
     form_class = StoreForm
     template_name = "store.html"
 
@@ -42,26 +42,17 @@ class storeView(View):
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
-class editStore(View):
+class StoreDetailsView(View):
     form_class = StoreForm
     template_name = "store.html"
 
     @method_decorator(csrf_exempt)
-    def post(self, request):
+    def get(self, request):
         payload = request.POST
-        print(request.POST.get("id"))
         store = Store.objects.filter(id=request.POST.get("id")).values()
-        print(store)
-        # store = Store.objects.get(id=request.POST.get("id")).values()
-        # print(store)
         return JsonResponse({'store': list(store)})
 
-
-class updateStore(View):
-    form_class = StoreForm
-    template_name = "store.html"
-
-    def post(self, request):
+    def put(self, request):
         try:
             payload = request.POST
             store = Store.objects.get(id=payload.get("id"))
@@ -84,12 +75,7 @@ class updateStore(View):
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
-
-class deleteStore(View):
-    form_class = StoreForm
-    template_name = "store.html"
-
-    def post(self, request):
+    def delete(self, request):
         try:
             payload = request.POST
             store = Store.objects.get(id=payload.get("id"))
