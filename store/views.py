@@ -7,6 +7,7 @@ from .forms import StoreForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, QueryDict
 
+
 class StoreView(View):
     form_class = StoreForm
     template_name = "store.html"
@@ -73,9 +74,11 @@ class StoreDetailsView(View):
 
     @csrf_exempt
     def delete(self, request):
-        payload = QueryDict(request.body)
-        store_id = payload.get("id")
-        print(store_id)
-        store = Store.objects.get(id=store_id)
-        store.delete()
-        return JsonResponse({'delete': True})
+        try:
+            payload = QueryDict(request.body)
+            store_id = payload.get("id")
+            store = Store.objects.get(id=store_id)
+            store.delete()
+            return JsonResponse({'delete': True})
+        except Exception as e:
+            return JsonResponse({"delete": e.args[0]})
