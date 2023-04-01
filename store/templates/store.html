@@ -15,10 +15,9 @@
             <h4 class="m-0 font-weight-bold text-primary" >Store Master</h4>
         </div>
         <div class="card-body" align="center">
-            <form method="POST" id="addUom" action="{% url 'store' %}">
+            <form method="POST" id="add_store" action="{% url 'store' %}">
                 {% csrf_token %}
                 <div class="row">
-                    
                     <div class="col-5">
                         <input type="text" name="name"  class="form-control" placeholder="Enter item name" required>
                     </div>
@@ -42,10 +41,10 @@
         <div class="col-lg-12 col-md-12 mb-4">
             <!-- Project Card Example -->
             <div class="card shadow mb-4">
-            <div class="card-header py-6">
-                <h4 class="m-0 font-weight-bold text-center text-primary">Store List</h4>
-            </div>
-            <div class="card-body">
+                <div class="card-header py-6">
+                    <h4 class="m-0 font-weight-bold text-center text-primary">Store List</h4>
+                </div>
+                <div class="card-body">
                 <div class="table-responsive">
                 <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                     <thead>
@@ -64,12 +63,12 @@
                             <th>{{ val.description }}</th>
                             <th>
                                 <a data-id="{{ val.id }}" data-target="#myModal"
-                                    data-toggle="modal" class="editStoreBtn">
+                                    data-toggle="modal" class="edit_store_btn">
                                     <button class="btn btn-warning btn-circle">
                                         <i class="fas fa-exclamation-triangle"></i>
                                     </button>
                                 </a>
-                                <a data-id="{{ val.id }}"  class="deleteStoreBtn"  onclick="return confirm('are you sure to delete this?')">
+                                <a data-id="{{ val.id }}"  class="delete_store_btn"  onclick="return confirm('are you sure to delete this?')">
                                     <button class="btn btn-danger btn-circle">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -98,7 +97,7 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <form  method="post" action="{% url 'update_store' %}" class="form-sample">
+                    <form method="POST" action="{% url 'store-details' %}" class="form-sample">
                         {% csrf_token %} 
                         <div class="row">
                             <div class="col-md-12">
@@ -106,8 +105,8 @@
                                     <label class="col-sm-3 col-form-label">Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="name" required="required"
-                                               class="form-control storeName" placeholder="name"/>
-                                        <input type="hidden" class="storeId" name="id">
+                                               class="form-control store_name" placeholder="name"/>
+                                        <input type="hidden" class="store_id" name="id">
                                     </div>
                                 </div>
                             </div>
@@ -118,7 +117,7 @@
                                     <label class="col-sm-3 col-form-label">Description</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="description"
-                                               class="form-control description" placeholder="Description"/>
+                                               class="form-control store_description" placeholder="Description"/>
                                     </div>
                                 </div>
                             </div>
@@ -136,57 +135,36 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script>
-    console.log('bangladesh!');
-    // $(".editCustomerBtn").click(function(){
-    //     $.ajax({
-    //         url : '',
-    //         type : 'POST',
-    //         data : {id : $(this).data('id')},
-    //         dataType : 'json',
-    //         success : function(json){
-    //             console.log(json);
-    //             $('.customerName').val(json['getCustomerById'][0]['name']);
-    //             $('.customerId').val(json['getCustomerById'][0]['id']);
-    //             $('.customerAddress').val(json['getCustomerById'][0]['address']);
-    //             $('.customerPhone').val(json['getCustomerById'][0]['phone']);
-    //             $('.customerEmail').val(json['getCustomerById'][0]['email']);
-    //             $('.customerRemarks').val(json['getCustomerById'][0]['remarks']);
-    //             $('.customerStatus').val(json['getCustomerById'][0]['status']);
-    //         },
-    //     });
-    // });
-   
-    $('.editStoreBtn').click(function(){
+    $('.edit_store_btn').click(function(){
         $.ajax({
-            url : "{% url 'edit_store' %}",
-            type: 'POST',
-            data: {id : $(this).data('id'),
-            csrfmiddlewaretoken: '{{ csrf_token }}'},
+            url : "{% url 'store-details' %}",
+            type: 'GET',
+            data: {id : $(this).data('id')},
             dataType: 'json',
             success: function(json){
-                console.log(json['store'][0]);
-                $('.storeName').val(json['store'][0]['name']);
-                $('.storeId').val(json['store'][0]['id']);
-                $('.description').val(json['store'][0]['description']);
-                
-            }
-        });
-    })
-    $('.deleteStoreBtn').click(function(){
-        $.ajax({
-            url : "{% url 'delete_store' %}",
-            type: 'POST',
-            data: {id : $(this).data('id'),
-            csrfmiddlewaretoken: '{{ csrf_token }}'},
-            dataType: 'json',
-            success: function(){
-                //location reload
-                location.reload();
-
+                $('.store_name').val(json['store'][0]['name']);
+                $('.store_id').val(json['store'][0]['id']);
+                $('.store_description').val(json['store'][0]['description']);
 
             }
         });
-    })
+    });
+
+<!--    $('.delete_store_btn').click(function(){-->
+<!--        $.ajax({-->
+<!--            url : "{% url 'store-details' %}",-->
+<!--            type: 'DELETE',-->
+<!--            data: {id : $(this).data('id'),-->
+<!--            csrfmiddlewaretoken: '{{ csrf_token }}'},-->
+<!--            dataType: 'json',-->
+<!--            success: function(){-->
+<!--                //location reload-->
+<!--                location.reload();-->
+
+
+<!--            }-->
+<!--        });-->
+<!--    })-->
 </script>
 
 {% endblock %}

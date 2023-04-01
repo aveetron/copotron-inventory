@@ -46,13 +46,12 @@ class StoreDetailsView(View):
     form_class = StoreForm
     template_name = "store.html"
 
-    @method_decorator(csrf_exempt)
+    @csrf_exempt
     def get(self, request):
-        payload = request.POST
-        store = Store.objects.filter(id=request.POST.get("id")).values()
+        store = Store.objects.filter(id=request.GET.get("id")).values()
         return JsonResponse({'store': list(store)})
 
-    def put(self, request):
+    def post(self, request):
         try:
             payload = request.POST
             store = Store.objects.get(id=payload.get("id"))
