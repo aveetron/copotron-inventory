@@ -5,10 +5,7 @@ from django.contrib import messages
 from .models import Store
 from .forms import StoreForm
 from django.views.decorators.csrf import csrf_exempt
-# Create your views here.
-from django.utils.decorators import method_decorator
-from django.http import JsonResponse
-
+from django.http import JsonResponse, QueryDict
 
 class StoreView(View):
     form_class = StoreForm
@@ -74,15 +71,11 @@ class StoreDetailsView(View):
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
+    @csrf_exempt
     def delete(self, request):
-        try:
-            payload = request.POST
-            store = Store.objects.get(id=payload.get("id"))
-            store.delete()
-            message = "store deleted"
-            messages.success(request, message)
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-        except Exception as e:
-            message = e.args[0]
-            messages.warning(request, message)
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        payload = QueryDict(request.body)
+        store_id = payload.get("id")
+        print(store_id)
+        store = Store.objects.get(id=store_id)
+        store.delete()
+        return JsonResponse({'delete': True})
