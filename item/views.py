@@ -4,7 +4,8 @@ from .forms import ItemTypeForm, ItemForm
 from django.views.generic import View
 from .models import Item, ItemType
 from django.contrib import messages
-
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, QueryDict
 
 class ItemTypeView(View):
     form_class = ItemTypeForm
@@ -106,5 +107,44 @@ class ItemView(View):
             message = item_form.errors
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
+        
+class ItemDetailView(View):
+    form_class = ItemForm
+    template_name = "item/item_detail.html"
+    @csrf_exempt
+    def get(self,request):
+        item = Item.objects.filter(id=request.GET.get("id")).values()
+        return JsonResponse({"item": list(item)})
+    def post(self,request):
+        try:
+            payload = request.POST
+            item = Item.objects.get(id=payload.get("id"))
+            item_serializer = self.form_class(payload, instance=item)
+            if item_serializer.is_valid():
+                if Item.objects.filter(name__iexact=item_serializer.data["name"]).exclude(id=payload.get("id")):
+                    message = "item already exists"
+                    messages.warning(request, message)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+                item_serializer.save()
+            else:
+                message = item_serializer.errors
+                messages.warning(request, message)
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            message = "item updated"
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        except Exception as e:
+            message = e.args[0]
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+    @csrf_exempt
+    def delete(self, request):
+        try:
+            payload = QueryDict(request.body)
+            item_id = payload.get("id")
+            item = Item.objects.get(id=item_id)
+            item.delete()
+            return JsonResponse({'delete': True})
+        except Exception as e:
+            return JsonResponse({"delete": e.args[0]})
 
