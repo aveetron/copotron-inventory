@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class ItemType(models.Model):
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
@@ -9,6 +10,7 @@ class ItemType(models.Model):
 
     class Meta:
         db_table = 'item_type'
+
 
 class Item(models.Model):
     item_code = models.CharField(max_length=50, null=True, blank=True)
@@ -21,4 +23,3 @@ class Item(models.Model):
 
     class Meta:
         db_table = 'item'
-

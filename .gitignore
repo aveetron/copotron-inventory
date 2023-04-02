@@ -8,4 +8,6 @@ item/migrations
 item/__pycache__
 /store/__pycache__
 /store/migrations
+/grn/migrations
+/grn/__pycache__
 env
