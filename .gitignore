@@ -10,4 +10,6 @@ item/__pycache__
 /store/migrations
 /grn/migrations
 /grn/__pycache__
+/stock/migrations
+/stock/__pycache__
 env

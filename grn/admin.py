@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import GRN, GRNDetails
+from .models import Grn, GrnDetails
 
-admin.site.register(GRN)
-admin.site.register(GRNDetails)
+admin.site.register(Grn)
+admin.site.register(GrnDetails)
