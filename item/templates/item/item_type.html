@@ -50,10 +50,9 @@
                     <thead>
                     <tr>
                         <th>No</th>
-                        <th>Code</th>
                         <th>Name</th>
                         <th>Description</th>
-
+                        <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -62,7 +61,20 @@
                             <th>{{ forloop.counter }}</th>
                             <th>{{ val.name }}</th>
                             <th>{{ val.description }}</th>
-                            <th>{{ val.status }}</th>
+                           
+                            <th>
+                                <a data-id="{{ val.id }}" data-target="#myModal"
+                                    data-toggle="modal" class="edit_item_btn">
+                                    <button class="btn btn-warning btn-circle">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </button>
+                                </a>
+                                <a data-id="{{ val.id }}"  class="delete_item_btn" value="{{csrf_token}}">
+                                    <button class="btn btn-danger btn-circle">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </a>
+                            </th>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -80,21 +92,22 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h3>Update UoM</h3>
+                    <h3>Update Item</h3>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <form  method="post" action="" class="form-sample">
-                        {% csrf_token %}
+                    <form  method="post" action="{% url 'item-type-detail' %}" class="form-sample">
+                        {% csrf_token %} 
+                        
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Name</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="name" required="required"
-                                               class="form-control customerName" placeholder="name"/>
-                                        <input type="hidden" class="customerId" name="id">
+                                               class="form-control itemName" placeholder="name"/>
+                                        <input type="hidden" class="itemTypeId" name="id">
                                     </div>
                                 </div>
                             </div>
@@ -102,56 +115,10 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Address</label>
+                                    <label class="col-sm-3 col-form-label">Description</label>
                                     <div class="col-sm-9">
-                                        <input type="text" name="address" required="required"
-                                               class="form-control customerAddress" placeholder="address"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Phone</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="phone" required="required"
-                                               class="form-control customerPhone" placeholder="phone"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Email</label>
-                                    <div class="col-sm-9">
-                                        <input type="email" name="email"
-                                               class="form-control customerEmail" placeholder="email"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Remarks</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" name="remarks"
-                                               class="form-control customerRemarks" placeholder="remarks"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">Status</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-control customerStatus" name="status">
-                                            <option value="1">Active</option>
-                                            <option value="0">Deactive</option>
-                                        </select>
+                                        <input type="text" name="description" 
+                                               class="form-control description" placeholder="Description"/>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +131,7 @@
                                     <div class="col-sm-6">
                                        <button type="submit" class="btn btn-success mr-2 col-md-4">Submit</button>
                                     </div>
-
+                                    
                                 </div>
                             </div>
                         </div>
@@ -175,30 +142,52 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 <script>
     console.log('bangladesh!');
-    $(".editCustomerBtn").click(function(){
+    $('.edit_item_btn').click(function(){
         $.ajax({
-            url : '',
-            type : 'POST',
-            data : {id : $(this).data('id')},
-            dataType : 'json',
-            success : function(json){
+            url : "{% url 'item-type-detail' %}",
+            type: 'GET',
+            data: {id : $(this).data('id')},
+            dataType: 'json',
+            success: function(json){
                 console.log(json);
-                $('.customerName').val(json['getCustomerById'][0]['name']);
-                $('.customerId').val(json['getCustomerById'][0]['id']);
-                $('.customerAddress').val(json['getCustomerById'][0]['address']);
-                $('.customerPhone').val(json['getCustomerById'][0]['phone']);
-                $('.customerEmail').val(json['getCustomerById'][0]['email']);
-                $('.customerRemarks').val(json['getCustomerById'][0]['remarks']);
-                $('.customerStatus').val(json['getCustomerById'][0]['status']);
-            },
+                $('.itemTypeId').val(json['itemType'][0]['id']);
+                $('.description').val(json['itemType'][0]['description']);
+                $('.itemName').val(json['itemType'][0]['name']);
+            }
         });
     });
+
+    let csrftoken = '{{ csrf_token }}'
+    $('.delete_item_btn').click(function(){
+        if (confirm("Do you want to delete this ?") == true) {
+            console.log("delete");
+            console.log($(this).data('id'));
+            $.ajax({
+                headers:{'X-CSRFToken': csrftoken},
+                url : "{% url 'item-type-detail' %}",
+                type: 'DELETE',
+                data: {
+                    id : $(this).data('id')
+                },
+                dataType: 'json',
+                success: function(){
+                    location.reload();
+                    //flash message
+                    
+                }
+            });
+        }
+        else {
+            console.log("something went wrong");
+        }
+    })
+
 </script>
 
 {% endblock %}

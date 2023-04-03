@@ -42,48 +42,46 @@ class ItemTypeView(View):
 
 class ItemTypeDetailsView(View):
     form_class = ItemTypeForm
-
-    def get(self, request, id):
-        item_type = ItemType.objects.filter(id=id).last()
-        if not item_type:
-            message = "There is no item type!"
-            messages.warning(request, message)
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-        context = {"item_type": item_type}
-        pass
+    template_name = "item/item_type.html"
+    @csrf_exempt
+    def get(self,request):
+        itemType = ItemType.objects.filter(id=request.GET.get("id")).values()
+        return JsonResponse({"itemType": list(itemType)})
 
 
-    def put(self, request, id):
-        payload = request.POST
-        item_type = ItemType.objects.filter(id=id).last()
-        if not item_type:
-            message = "There is no item type!"
-            messages.warning(request, message)
-            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-        item_type_serializer = self.form_class(item_type, data=payload)
-        if item_type_serializer.is_valid():
+    def post(self,request):
+        try:
+            payload = request.POST
+            item_type = ItemType.objects.get(id=payload.get("id"))
+            item_type_serializer = self.form_class(payload, instance=item_type)
+            if item_type_serializer.is_valid():
+                if ItemType.objects.filter(name__iexact=item_type_serializer.data["name"]).exclude(id=payload.get("id")):
+                    message = "item type already exists"
+                    messages.warning(request, message)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+                item_type_serializer.save()
+            else:
+                message = item_type_serializer.errors
+                messages.warning(request, message)
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
             message = "item type updated"
             messages.success(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-        else:
-            message = item_type_serializer.errors
+        except Exception as e:
+            message = e.args[0]
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-    def delete(self, request, id):
-        item_type = ItemType.objects.filter(id=id).last()
-        if not item_type:
-            message = "There is no item type!"
+    def delete(self, request):
+        try:
+            payload = QueryDict(request.body)
+            item_type_id = payload.get("id")
+            item_type = ItemType.objects.get(id=item_type_id)
+            item_type.delete()
+            return JsonResponse({'delete': True})
+        except Exception as e:
+            message = e.args[0]
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
-        item_type.delete()
-        message = "item deleted!"
-        messages.success(request, message)
-        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-
 
 class ItemView(View):
     form_class = ItemForm
@@ -110,7 +108,7 @@ class ItemView(View):
         
 class ItemDetailView(View):
     form_class = ItemForm
-    template_name = "item/item_detail.html"
+    template_name = "item/items.html"
     @csrf_exempt
     def get(self,request):
         item = Item.objects.filter(id=request.GET.get("id")).values()
