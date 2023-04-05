@@ -1,8 +1,9 @@
 from django.db import models
 from item.models import Item
+from item.models import InventoryBaseModel
 
 
-class Stock(models.Model):
+class Stock(InventoryBaseModel):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True, blank=True)
     price = models.PositiveIntegerField(null=True, blank=True)
     quantity = models.PositiveIntegerField(null=True, blank=True)

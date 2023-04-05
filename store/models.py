@@ -1,6 +1,8 @@
 from django.db import models
+from item.models import InventoryBaseModel
 
-class Store(models.Model):
+
+class Store(InventoryBaseModel):
     name = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
 
