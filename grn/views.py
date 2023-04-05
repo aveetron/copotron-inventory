@@ -3,7 +3,7 @@ from django.views import View
 from .forms import GrnForms, GrnDetailsForms
 from .models import Grn, GrnDetails
 
-class GRNView(View):
+class GrnView(View):
     form_class = GrnForms
     template_name = "grn.html"
 
@@ -11,3 +11,11 @@ class GRNView(View):
         grn = Grn.objects.all().order_by("-id")
         context = {"grn": grn}
         return render(request, context, self.template_name)
+
+    def post(self, request):
+        payload = request.POST
+        grn_serializer = GrnForms(payload)
+        if grn_serializer.is_valid():
+            grn = grn_serializer.save()
+        else:
+            pass
