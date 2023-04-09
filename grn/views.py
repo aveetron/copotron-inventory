@@ -3,14 +3,15 @@ from django.views import View
 from .forms import GrnForms, GrnDetailsForms
 from .models import Grn, GrnDetails
 
+
 class GrnView(View):
     form_class = GrnForms
-    template_name = "grn.html"
+    template_name = "grn/grn.html"
 
     def get(self, request):
-        grn = Grn.objects.all().order_by("-id")
-        context = {"grn": grn}
-        return render(request, context, self.template_name)
+        # grn = Grn.objects.all().order_by("-id")
+        # context = {"grn": grn}
+        return render(request,  self.template_name)
 
     def post(self, request):
         payload = request.POST
