@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import View
 from .forms import GrnForms, GrnDetailsForms
 from .models import Grn, GrnDetails
+from item.models import Item
+from store.models import Store
 
 
 class GrnView(View):
@@ -9,9 +11,10 @@ class GrnView(View):
     template_name = "grn/grn.html"
 
     def get(self, request):
-        # grn = Grn.objects.all().order_by("-id")
-        # context = {"grn": grn}
-        return render(request,  self.template_name)
+        item = Item.objects.all()
+        store = Store.objects.all()
+        context = {'items': item, 'stores': store}
+        return render(request,  self.template_name, context)
 
     def post(self, request):
         payload = request.POST

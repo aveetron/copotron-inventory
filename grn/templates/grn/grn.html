@@ -40,8 +40,8 @@
                                             <label for="exampleFormControlInput1"
                                                 class="font-weight-bold text-primary">Store</label>
                                             <select id="store" class="form-control " name="store">
-                                                <option selected disabled>select Store</option>
-                                                {% for store in allStore %}
+                                                <option selected disabled>Select Store</option>
+                                                {% for store in stores %}
                                                     <option value={{store.id}}>{{store.name}}</option>
                                                 {% endfor %}
                                             </select>
@@ -80,8 +80,8 @@
                                                     <div class="col-md-5">
                                                         <div class="form-group">
                                                             <select id="size" class="form-control" name="size" required>
-                                                                <option selected disabled>select Item</option>
-                                                                {% for item in allItem %}
+                                                                <option selected disabled>Select Item</option>
+                                                                {% for item in items %}
                                                                     <option value={{item.id}}>{{item.name}}</option>
                                                                 {% endfor %}
                                                             </select>
