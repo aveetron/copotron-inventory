@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from .forms import ItemTypeForm, ItemForm
+from .forms import ItemTypeForm, ItemForm, UomForm
 from django.views.generic import View
-from .models import Item, ItemType
+from .models import Item, ItemType, Uom
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, QueryDict
+
 
 class ItemTypeView(View):
     form_class = ItemTypeForm
@@ -40,16 +41,17 @@ class ItemTypeView(View):
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
+
 class ItemTypeDetailsView(View):
     form_class = ItemTypeForm
     template_name = "item/item_type.html"
+
     @csrf_exempt
-    def get(self,request):
+    def get(self, request):
         itemType = ItemType.objects.filter(id=request.GET.get("id")).values()
         return JsonResponse({"itemType": list(itemType)})
 
-
-    def post(self,request):
+    def post(self, request):
         try:
             payload = request.POST
             item_type = ItemType.objects.get(id=payload.get("id"))
@@ -71,6 +73,7 @@ class ItemTypeDetailsView(View):
             message = e.args[0]
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
     def delete(self, request):
         try:
             payload = QueryDict(request.body)
@@ -82,6 +85,7 @@ class ItemTypeDetailsView(View):
             message = e.args[0]
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
 
 class ItemView(View):
     form_class = ItemForm
@@ -105,15 +109,18 @@ class ItemView(View):
             message = item_form.errors
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
-        
+
+
 class ItemDetailView(View):
     form_class = ItemForm
     template_name = "item/items.html"
+
     @csrf_exempt
-    def get(self,request):
+    def get(self, request):
         item = Item.objects.filter(id=request.GET.get("id")).values()
         return JsonResponse({"item": list(item)})
-    def post(self,request):
+
+    def post(self, request):
         try:
             payload = request.POST
             item = Item.objects.get(id=payload.get("id"))
@@ -135,6 +142,7 @@ class ItemDetailView(View):
             message = e.args[0]
             messages.warning(request, message)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
     @csrf_exempt
     def delete(self, request):
         try:
@@ -146,3 +154,79 @@ class ItemDetailView(View):
         except Exception as e:
             return JsonResponse({"delete": e.args[0]})
 
+
+class UomView(View):
+    from_class = UomForm
+    template_name = "uom/uom.html"
+
+    def get(self, request):
+        uoms = Uom.objects.all()
+        context = {"uoms": uoms}
+        return render(request, self.template_name, context)
+
+    def post(self, request):
+        try:
+            payload = request.POST
+            uom_serializer = self.from_class(payload)
+            if uom_serializer.is_valid():
+                if Uom.objects.filter(name__iexact=uom_serializer.data["name"]):
+                    message = "Uom already exists"
+                    messages.warning(request, message)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+                uom_serializer.save()
+            else:
+                message = uom_serializer.errors
+                messages.warning(request, message)
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            message = "Uom created"
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        except Exception as e:
+            message = e.args[0]
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+class UomDetailsView(View):
+    form_class = UomForm
+    template_name = "uom/uom.html"
+
+    @csrf_exempt
+    def get(self, request):
+        uom = Uom.objects.filter(id=request.GET.get("id")).values()
+        return JsonResponse({"uom": list(uom)})
+
+    def post(self, request):
+        try:
+            payload = request.POST
+            uom = Uom.objects.get(id=payload.get("id"))
+            uom_serializer = self.form_class(payload, instance=uom)
+            if uom_serializer.is_valid():
+                if Uom.objects.filter(name__iexact=uom_serializer.data["name"]).exclude(id=payload.get("id")):
+                    message = "Uom already exists"
+                    messages.warning(request, message)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+                uom_serializer.save()
+            else:
+                message = uom_serializer.errors
+                messages.warning(request, message)
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+            message = "Uom updated"
+            messages.success(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        except Exception as e:
+            message = e.args[0]
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+    def delete(self, request):
+        try:
+            payload = QueryDict(request.body)
+            uom_id = payload.get("id")
+            uom = Uom.objects.get(id=uom_id)
+            uom.delete()
+            return JsonResponse({'delete': True})
+        except Exception as e:
+            message = e.args[0]
+            messages.warning(request, message)
+            return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
