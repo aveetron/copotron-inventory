@@ -94,7 +94,8 @@ class ItemView(View):
     def get(self, request):
         items = Item.objects.all()
         item_types = ItemType.objects.all()
-        context = {"items": items, "item_types": item_types}
+        uoms = Uom.objects.all().order_by("-id")
+        context = {"items": items, "item_types": item_types, "uoms": uoms}
         return render(request, self.template_name, context)
 
     def post(self, request):

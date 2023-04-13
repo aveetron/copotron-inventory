@@ -18,9 +18,9 @@
             <form method="POST" id="addUom" action="{% url 'item' %}">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-3">
+                    <div class="col-2">
                         <select name="item_type" class="form-control">
-                            <option>Select Item Type</option>
+                            <option>Item Type</option>
                             {% for val in item_types %}
                                 <option value="{{val.id}}">{{val.name}}</option>
                             {% endfor %}
@@ -29,7 +29,15 @@
                     <div class="col-3">
                         <input type="text" name="name"  class="form-control" placeholder="Enter item name" required>
                     </div>
-                    <div class="col-4">
+                    <div class="col-2">
+                        <select name="uom" class="form-control">
+                            <option>UoM</option>
+                            {% for uom in uoms %}
+                                <option value="{{uom.id}}">{{uom.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-3">
                         <input type="text" name="description"  class="form-control" placeholder="Enter item description">
                     </div>
                     <div class="col-2">
@@ -60,6 +68,7 @@
                         <th>No</th>
                         <th>Type</th>
                         <th>Name</th>
+                        <th>UoM</th>
                         <th>Description</th>
                         <th>Action</th>
                         
@@ -71,6 +80,7 @@
                             <th>{{ forloop.counter }}</th>
                             <th>{{ val.item_type.name }}</th>
                             <th>{{ val.name }}</th>
+                            <th>{{ val.uom.name }}</th>
                             <th>{{ val.description }}</th>
                             <th>
                                 <a data-id="{{ val.id }}" data-target="#myModal"
@@ -123,8 +133,7 @@
                                       </select>
                                    </div>
                                 </div>
-                            </div>   
-                            
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -141,6 +150,20 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">UoM</label>
+                                    <div class="col-sm-9">
+                                      <select id="uom" name="uom" class="form-control">
+                                        {% for val in uoms %}
+                                            <option value="{{val.id}}">{{val.name}}</option>
+                                        {% endfor %}
+                                      </select>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group row">
                                     <label class="col-sm-3 col-form-label">Description</label>
                                     <div class="col-sm-9">
                                         <input type="text" name="description" 
@@ -149,6 +172,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
@@ -185,6 +209,7 @@
                 $('#item_type1').val(json['item'][0]['item_type_id']);
                 $('.itemId').val(json['item'][0]['id']);
                 $('.description').val(json['item'][0]['description']);
+                $('#uom').val(json['item'][0]['uom_id']);
                 $('.itemName').val(json['item'][0]['name']);
             }
         });

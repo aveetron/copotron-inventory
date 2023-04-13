@@ -19,6 +19,7 @@ class GrnDetails(models.Model):
     grn = models.ForeignKey(Grn, on_delete=models.CASCADE, null=True, blank=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField(null=True, blank=True)
+    price = models.PositiveIntegerField(null=True, blank=True)
 
     def __str__(self):
         return self.grn.code + "---" + self.item.name

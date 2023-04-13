@@ -13,3 +13,4 @@ item/__pycache__
 /stock/migrations
 /stock/__pycache__
 env
+db.sqlite3
