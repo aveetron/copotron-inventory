@@ -6,6 +6,7 @@ from item.models import Item
 from store.models import Store
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
+from django.db.models import Sum
 
 
 class GrnView(View):
@@ -22,17 +23,30 @@ class GrnView(View):
         payload = request.POST
         grn_serializer = GrnForms(payload)
         if grn_serializer.is_valid():
+            # auto generate grn code format: GRN-0001
+            grn_code = Grn.objects.all().count() + 1
+            grn_code = "GRN-" + str(grn_code).zfill(4)
+            # add grn code to payload
+            # save
+
             grn = grn_serializer.save()
+            grn.code = grn_code
             item = payload.getlist('item')
             quantity = payload.getlist('quantity')
-            zipped = zip(item, quantity)
-            for item, quantity in zipped:
-                data = {'grn': grn.id, 'item': item, 'quantity': quantity}
+            price = payload.getlist('price')
+            zipped = zip(item, quantity, price)
+            for item, quantity, price in zipped:
+                data = {'grn': grn.id, 'item': item,
+                        'quantity': quantity, 'price': price}
 
                 grn_details = GrnDetailsForms(data)
 
                 if grn_details.is_valid():
                     grn_details.save()
+            # calculate total price aggregate
+            total_price = GrnDetails.objects.filter(
+                grn=grn.id).aggregate(Sum('price'))
+            grn.total_price = total_price['price__sum']
             grn.save()
             massage = "grn created"
             messages.success(request, massage)

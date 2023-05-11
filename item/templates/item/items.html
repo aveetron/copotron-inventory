@@ -19,7 +19,7 @@
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-2">
-                        <select name="item_type" class="form-control">
+                        <select name="item_type" class="form-control js-example-basic-single">
                             <option>Item Type</option>
                             {% for val in item_types %}
                                 <option value="{{val.id}}">{{val.name}}</option>
@@ -30,7 +30,7 @@
                         <input type="text" name="name"  class="form-control" placeholder="Enter item name" required>
                     </div>
                     <div class="col-2">
-                        <select name="uom" class="form-control">
+                        <select name="uom" class="form-control js-example-basic-single">
                             <option>UoM</option>
                             {% for uom in uoms %}
                                 <option value="{{uom.id}}">{{uom.name}}</option>
@@ -196,8 +196,13 @@
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
 <script>
+    $(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
     console.log('bangladesh!');
+    
     $('.edit_item_btn').click(function(){
         $.ajax({
             url : "{% url 'item-detail' %}",

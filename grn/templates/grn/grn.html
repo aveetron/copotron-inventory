@@ -1,166 +1,214 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block main %}
+{% extends 'base.html' %} {% load static %} {% block main %}
 <div class="dashboard-wrapper">
-    <div class="dashboard-ecommerce">
-        <div class="container-fluid dashboard-content ">
-            <div class="container-fluid ">
+  <div class="dashboard-ecommerce">
+    <div class="container-fluid dashboard-content">
+      <div class="container-fluid">
+        <!-- Content Row -->
+        <div class="row">
+          <!-- Content Column -->
+          <div class="col-lg-12 col-md-12">
+            <!-- Project Card Example -->
+            <div class="card shadow">
+              <div class="card-header py-6">
+                <h4 class="m-0 font-weight-bold text-primary">Add GRN</h4>
+              </div>
+              <div class="card-body">
+                <form
+                  method="POST"
+                  id="addCatagory"
+                  action=""
+                  enctype="multipart/form-data"
+                >
+                  {% csrf_token %}
 
-                <!-- Content Row -->
-                <div class="row ">
-                    <!-- Content Column -->
-                    <div class="col-lg-12 col-md-12 ">
-                        <!-- Project Card Example -->
-                        <div class="card shadow ">
-                            <div class="card-header py-6">
-                                <h4 class="m-0 font-weight-bold text-primary">Add GRN</h4>
-                            </div>
-                            <div class="card-body" >
-                                <form method="POST" id="addCatagory" action="" enctype="multipart/form-data">
-                                    {% csrf_token %}        
-                                   <div class="row">                             
-                                        <div class="form-group col-md-12">
-                                            <label for="exampleFormControlInput1"
-                                                class="font-weight-bold text-primary">GRN
-                                                Code</label>
-                                            <input type="text" name="code" class="form-control"
-                                                placeholder="Enter GRN code" required>
-                                        </div>
-                                    </div>  
-                                    
-                                   <div class="row">                             
-                                        <div class="form-group col-md-6">
-                                            <label for="exampleFormControlInput1"
-                                                class="font-weight-bold text-primary">Total Price</label>
-                                            <input type="number" name="total_price" class="form-control"
-                                                placeholder="Enter Total Price" min='0' required>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <label for="exampleFormControlInput1"
-                                                class="font-weight-bold text-primary">Store</label>
-                                            <select id="store" class="form-control " name="store">
-                                                <option selected disabled>Select Store</option>
-                                                {% for store in stores %}
-                                                    <option value={{store.id}}>{{store.name}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        
-                                    </div>  
-                                                                 
-                                    
-                                    <div class="col-md-12">
-                                        <div class="panel panel-white">
-                                            <div class="panel-body">
-                                                {% for pd in poDetails %}
-                                                <div class="row">
-                                                    <input type="hidden" name="grn" value="{{ pd.id }}">
-                                                   
-                                                    <div class="col-md-5">
-                                                        <div class="form-group">
-                                                            <select class="form-control m-b-sm po_size" name="item">
-                                                                <option value="{{ pd.item.id }}" selected>{{ pd.item.name }}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <div class="form-group">
-                                                            <input type="number" class="form-control" name="qty" placeholder="1000..." value="{{ pd.quantity }}">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-close"></i></button>
-                                                    </div>
-                                                </div>
-                                                {% endfor %}
-                                                <div class="row duplicateMe ">
-                                                    
-                                                    <div class="col-md-5">
-                                                        <div class="form-group">
-                                                            <select id="item" class="form-control" name="item" required>
-                                                                <option selected disabled>Select Item</option>
-                                                                {% for item in items %}
-                                                                    <option value={{item.id}}>{{item.name}}</option>
-                                                                {% endfor %}
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-5">
-                                                        <div class="form-group">
-                                                            <input type="number" name="quantity" required="required"
-                                                            class="form-control quantity" min='0' placeholder="quantity"/>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <button type="button" class="btn btn-success btn-rounded" style="margin-top: 1px;" id="repeat"><i class="fa fa-plus"></i></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                   <div class="col-md-12">
-                                        <div class="form-group row">
-                                            <label class="col-sm-6 col-form-label" ></label>
-                                            <button class="btn btn-block btn-success btn-rounded">Submit</button>
-                                        </div>
-                                   </div>
-                                </form>
-                            </div>
-                        </div>
+                  <div class="row">
+                    <div class="form-group col-md-12">
+                      <label
+                        for="exampleFormControlInput1"
+                        class="font-weight-bold text-primary"
+                        >Store</label
+                      >
+                      <select id="store" class="form-control" name="store">
+                        <option selected disabled>Select Store</option>
+                        {% for store in stores %}
+                        <option value="{{store.id}}">{{store.name}}</option>
+                        {% endfor %}
+                      </select>
                     </div>
-                </div>
-                <a class="btn btn-primary btn-rounded" href="">Go to GRN Dashboard</a>
+                  </div>
+
+                  <div class="col-md-12">
+                    <div class="panel panel-white">
+                      <div class="panel-body">
+                        {% for pd in poDetails %}
+                        <div class="row">
+                          <input type="hidden" name="grn" value="{{ pd.id }}" />
+
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <select
+                                class="form-control m-b-sm po_size"
+                                name="item"
+                              >
+                                <option value="{{ pd.item.id }}" selected>
+                                  {{ pd.item.name }}
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="qty"
+                                placeholder="1000..."
+                                value="{{ pd.quantity }}"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                class="form-control"
+                                name="price"
+                                placeholder="Price"
+                                value="{{ pd.price }}"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-2">
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              style="margin-top: 1px"
+                              id="remove"
+                            >
+                              <i class="fa fa-close"></i>
+                            </button>
+                          </div>
+                        </div>
+                        {% endfor %}
+                        <div class="row duplicateMe">
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <select
+                                id="item"
+                                class="form-control"
+                                name="item"
+                                required
+                              >
+                                <option selected disabled>Select Item</option>
+                                {% for item in items %}
+                                <option value="{{item.id}}">
+                                  {{item.name}}
+                                </option>
+                                {% endfor %}
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                name="quantity"
+                                required="required"
+                                class="form-control quantity"
+                                min="0"
+                                placeholder="quantity"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                              <input
+                                type="number"
+                                name="price"
+                                required="required"
+                                class="form-control price"
+                                min="0"
+                                placeholder="price"
+                              />
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <button
+                              type="button"
+                              class="btn btn-success btn-rounded"
+                              style="margin-top: 1px"
+                              id="repeat"
+                            >
+                              <i class="fa fa-plus"></i>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group row">
+                      <label class="col-sm-6 col-form-label"></label>
+                      <button class="btn btn-block btn-success btn-rounded">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
+        <a class="btn btn-primary btn-rounded" href="">Go to GRN Dashboard</a>
+      </div>
     </div>
+  </div>
 </div>
-
-
-
-
-
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
-    $('.editSizeBtn').click(function(){
-        $.ajax({
-            url : "",
-            type: 'POST',
-            data: {id : $(this).data('id')},
-            dataType: 'json',
-            success: function(json){
-                console.log(json);
-                $('.sizeName').val(json['getSize'][0]['name']);
-                $('.sizeId').val(json['getSize'][0]['id']);
-                let getStatus = json['getSize'][0]['status'];
-                console.log(getStatus);
-                if(getStatus == true){
-                    $('.sizeStatus').val(1);
-                }
-                else if(getStatus == false){
-                    $('.sizeStatus').val(0);
-                }
-                
-            }
-        });
-    })
-    $('body').on('click', '#repeat', function(){
-        $duplicate = $('.duplicateMe');
-
-        $duplicate.find('span').remove();
-
-        var clone = $duplicate.html();
-		$('.duplicateMe').parent().append('<div class="row duplicateMe">'+clone+'</div>');
-        $(this).parent().append('<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>');
-        $(this).remove();
-        $duplicate.removeClass('duplicateMe');
+  $(".editSizeBtn").click(function () {
+    $.ajax({
+      url: "",
+      type: "POST",
+      data: { id: $(this).data("id") },
+      dataType: "json",
+      success: function (json) {
+        console.log(json);
+        $(".sizeName").val(json["getSize"][0]["name"]);
+        $(".sizeId").val(json["getSize"][0]["id"]);
+        let getStatus = json["getSize"][0]["status"];
+        console.log(getStatus);
+        if (getStatus == true) {
+          $(".sizeStatus").val(1);
+        } else if (getStatus == false) {
+          $(".sizeStatus").val(0);
+        }
+      },
     });
+  });
+  $("body").on("click", "#repeat", function () {
+    $duplicate = $(".duplicateMe");
 
-    // Remove Form data
-    $('body').on('click', '#remove', function(){
-        $(this).parent().parent().remove();
-    });
+    $duplicate.find("span").remove();
+
+    var clone = $duplicate.html();
+    $(".duplicateMe")
+      .parent()
+      .append('<div class="row duplicateMe">' + clone + "</div>");
+    $(this)
+      .parent()
+      .append(
+        '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
+      );
+    $(this).remove();
+    $duplicate.removeClass("duplicateMe");
+  });
+
+  // Remove Form data
+  $("body").on("click", "#remove", function () {
+    $(this).parent().parent().remove();
+  });
 </script>
 {% endblock %}
