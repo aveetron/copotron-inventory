@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from .forms import GrnForms, GrnDetailsForms
+from .forms import GrnForms, GrnDetailsForms, StockForms
 from .models import Grn, GrnDetails
 from item.models import Item
 from store.models import Store
@@ -48,6 +48,20 @@ class GrnView(View):
                 grn=grn.id).aggregate(Sum('price'))
             grn.total_price = total_price['price__sum']
             grn.save()
+            # update stock
+            grn_details = GrnDetails.objects.filter(grn=grn.id)
+            for grn_detail in grn_details:
+                stock = StockForms()
+                stock_serializer = StockForms()
+                data = {'item': grn_detail.item.id, 'store': grn.store.id,
+                        'quantity': grn_detail.quantity, 'price': grn_detail.price}
+                stock_serializer = StockForms(data)
+                if stock_serializer.is_valid():
+                    stock_serializer.save()
+                else:
+                    massage = stock_serializer.errors
+                    messages.warning(request, massage)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
             massage = "grn created"
             messages.success(request, massage)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))

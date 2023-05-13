@@ -1,5 +1,5 @@
 from django import forms
-from .models import Grn, GrnDetails
+from .models import Grn, GrnDetails, Stock
 
 
 class GrnForms(forms.ModelForm):
@@ -11,4 +11,10 @@ class GrnForms(forms.ModelForm):
 class GrnDetailsForms(forms.ModelForm):
     class Meta:
         model = GrnDetails
+        fields = "__all__"
+
+
+class StockForms(forms.ModelForm):
+    class Meta:
+        model = Stock
         fields = "__all__"
