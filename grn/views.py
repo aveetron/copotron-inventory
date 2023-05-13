@@ -51,7 +51,6 @@ class GrnView(View):
             # update stock
             grn_details = GrnDetails.objects.filter(grn=grn.id)
             for grn_detail in grn_details:
-                stock = StockForms()
                 stock_serializer = StockForms()
                 data = {'item': grn_detail.item.id, 'store': grn.store.id,
                         'quantity': grn_detail.quantity, 'price': grn_detail.price}
