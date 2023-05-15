@@ -20,7 +20,7 @@ class GrnDetails(models.Model):
     grn = models.ForeignKey(
         Grn, on_delete=models.CASCADE, null=True, blank=True)
     item = models.ForeignKey(
-        Item, on_delete=models.CASCADE, null=True, blank=True)
+        Item, on_delete=models.CASCADE, null=True, blank=True, related_name="grn_item")
     quantity = models.PositiveIntegerField(null=True, blank=True)
     price = models.PositiveIntegerField(null=True, blank=True)
 
@@ -33,7 +33,7 @@ class GrnDetails(models.Model):
 
 class Stock(models.Model):
     item = models.ForeignKey(
-        Item, on_delete=models.CASCADE, null=True, blank=True)
+        Item, on_delete=models.CASCADE, null=True, blank=True, related_name="stock_item")
     quantity = models.PositiveIntegerField(null=True, blank=True)
     store = models.ForeignKey(
         Store, on_delete=models.CASCADE, null=True, blank=True)
