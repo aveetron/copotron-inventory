@@ -161,7 +161,7 @@ class UomView(View):
     template_name = "uom/uom.html"
 
     def get(self, request):
-        uoms = Uom.objects.all()
+        uoms = Uom.objects.all().order_by("-id")
         context = {"uoms": uoms}
         return render(request, self.template_name, context)
 

@@ -6,7 +6,8 @@ from store.models import Store
 class Grn(models.Model):
     code = models.CharField(max_length=100, null=True, blank=True)
     total_price = models.PositiveIntegerField(null=True, blank=True)
-    store = models.ForeignKey(Store, on_delete=models.CASCADE, null=True, blank=True)
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.code
@@ -16,8 +17,10 @@ class Grn(models.Model):
 
 
 class GrnDetails(models.Model):
-    grn = models.ForeignKey(Grn, on_delete=models.CASCADE, null=True, blank=True)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True, blank=True)
+    grn = models.ForeignKey(
+        Grn, on_delete=models.CASCADE, null=True, blank=True)
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE, null=True, blank=True, related_name="grn_item")
     quantity = models.PositiveIntegerField(null=True, blank=True)
     price = models.PositiveIntegerField(null=True, blank=True)
 
@@ -26,3 +29,17 @@ class GrnDetails(models.Model):
 
     class Meta:
         db_table = 'grn_details'
+
+
+class Stock(models.Model):
+    item = models.ForeignKey(
+        Item, on_delete=models.CASCADE, null=True, blank=True, related_name="stock_item")
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    store = models.ForeignKey(
+        Store, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.item.name
+
+    class Meta:
+        db_table = 'stock'

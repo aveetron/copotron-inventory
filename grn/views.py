@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.views import View
-from .forms import GrnForms, GrnDetailsForms
+from .forms import GrnForms, GrnDetailsForms, StockForms
 from .models import Grn, GrnDetails
 from item.models import Item
 from store.models import Store
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
+from django.db.models import Sum
 
 
 class GrnView(View):
@@ -13,27 +14,52 @@ class GrnView(View):
     template_name = "grn/grn.html"
 
     def get(self, request):
-        item = Item.objects.all()
-        store = Store.objects.all()
-        context = {'items': item, 'stores': store}
+        grns = Grn.objects.all()
+        context = {'gens': grns}
         return render(request,  self.template_name, context)
 
     def post(self, request):
         payload = request.POST
         grn_serializer = GrnForms(payload)
         if grn_serializer.is_valid():
+            # auto generate grn code format: GRN-0001
+            grn_code = Grn.objects.all().count() + 1
+            grn_code = "GRN-" + str(grn_code).zfill(4)
+            # add grn code to payload
+            # save
+
             grn = grn_serializer.save()
+            grn.code = grn_code
             item = payload.getlist('item')
             quantity = payload.getlist('quantity')
-            zipped = zip(item, quantity)
-            for item, quantity in zipped:
-                data = {'grn': grn.id, 'item': item, 'quantity': quantity}
+            price = payload.getlist('price')
+            zipped = zip(item, quantity, price)
+            for item, quantity, price in zipped:
+                data = {'grn': grn.id, 'item': item,
+                        'quantity': quantity, 'price': price}
 
                 grn_details = GrnDetailsForms(data)
 
                 if grn_details.is_valid():
                     grn_details.save()
+            # calculate total price aggregate
+            total_price = GrnDetails.objects.filter(
+                grn=grn.id).aggregate(Sum('price'))
+            grn.total_price = total_price['price__sum']
             grn.save()
+            # update stock
+            grn_details = GrnDetails.objects.filter(grn=grn.id)
+            for grn_detail in grn_details:
+                stock_serializer = StockForms()
+                data = {'item': grn_detail.item.id, 'store': grn.store.id,
+                        'quantity': grn_detail.quantity, 'price': grn_detail.price}
+                stock_serializer = StockForms(data)
+                if stock_serializer.is_valid():
+                    stock_serializer.save()
+                else:
+                    massage = stock_serializer.errors
+                    messages.warning(request, massage)
+                    return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
             massage = "grn created"
             messages.success(request, massage)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
