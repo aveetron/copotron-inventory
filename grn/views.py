@@ -15,7 +15,9 @@ class GrnView(View):
 
     def get(self, request):
         grns = Grn.objects.all()
-        context = {'gens': grns}
+        store = Store.objects.all()
+        item = Item.objects.all()
+        context = {'grns': grns, 'stores': store, 'items': item}
         return render(request,  self.template_name, context)
 
     def post(self, request):
