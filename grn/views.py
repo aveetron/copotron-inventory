@@ -14,9 +14,9 @@ class GrnView(View):
     template_name = "grn/grn.html"
 
     def get(self, request):
-        grns = Grn.objects.all().order_by('-id')
-        store = Store.objects.all().order_by('-id')
-        item = Item.objects.all().order_by('-id')
+        grns = Grn.objects.all()
+        store = Store.objects.all()
+        item = Item.objects.all()
         context = {'grns': grns, 'stores': store, 'items': item}
         return render(request,  self.template_name, context)
 
