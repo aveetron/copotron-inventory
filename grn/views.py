@@ -7,6 +7,8 @@ from store.models import Store
 from django.contrib import messages
 from django.shortcuts import HttpResponseRedirect
 from django.db.models import Sum
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 class GrnView(View):
@@ -69,3 +71,19 @@ class GrnView(View):
             massage = grn_serializer.errors
             messages.warning(request, massage)
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+class GrnDetailView(View):
+
+    @csrf_exempt
+    def get(self, request):
+        grn_id = request.GET.get('id')
+        grn = Grn.objects.filter(id=request.GET.get("id")).values()
+        storeName = Store.objects.filter(id=grn[0]['store_id']).values()
+
+        grn_details = GrnDetails.objects.filter(grn=grn_id).values()
+        for grn_detail in grn_details:
+            itemName = Item.objects.filter(
+                id=grn_detail['item_id']).values()
+            grn_detail['item_id'] = itemName[0]['name']
+        return JsonResponse({'grn': list(grn), "grn_details": list(grn_details), "storeName": list(storeName)})
