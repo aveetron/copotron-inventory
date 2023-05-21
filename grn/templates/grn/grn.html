@@ -74,8 +74,8 @@
   
   </div>
   <div class="container">
-    <div class="modal fade" id="myModal" role="dialog">
-      <div class="modal-dialog">
+    <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
           <div class="modal-header">
             <h3>ADD GRN</h3>
@@ -125,7 +125,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <input
                             type="number"
@@ -136,18 +136,18 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <input
                             type="number"
                             class="form-control"
-                            name="price"
-                            placeholder="Price"
-                            value="{{ pd.price }}"
+                            name="unit_price"
+                            placeholder="unit price"
+                            value="{{ pd.unit_price }}"
                           />
                         </div>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-1">
                         <button
                           type="button"
                           class="btn btn-danger"
@@ -191,11 +191,11 @@
                         <div class="form-group">
                           <input
                             type="number"
-                            name="price"
+                            name="unit_price"
                             required="required"
-                            class="form-control price"
+                            class="form-control unit_price"
                             min="0"
-                            placeholder="price"
+                            placeholder="unit price"
                           />
                         </div>
                       </div>
@@ -270,8 +270,8 @@
                 <thead>
                 <tr>
                     <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Unit Price</th>
                 </tr>
                 </thead>
                 <tbody id="innerTable">
@@ -309,7 +309,7 @@
             return `<tr>
                         <td>${item.item_id}</td>
                         <td>${item.quantity}</td>
-                        <td>${item.price}</td>
+                        <td>${item.unit_price}</td>
                     </tr>`;
           })
         );

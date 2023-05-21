@@ -9,8 +9,8 @@ class Grn(models.Model):
     store = models.ForeignKey(
         Store, on_delete=models.CASCADE, null=True, blank=True)
 
-    def __str__(self):
-        return self.code
+    # def __str__(self):
+    #     return self.code
 
     class Meta:
         db_table = 'grn'
@@ -22,10 +22,10 @@ class GrnDetails(models.Model):
     item = models.ForeignKey(
         Item, on_delete=models.CASCADE, null=True, blank=True, related_name="grn_item")
     quantity = models.PositiveIntegerField(null=True, blank=True)
-    price = models.PositiveIntegerField(null=True, blank=True)
+    unit_price = models.PositiveIntegerField(null=True, blank=True)
 
-    def __str__(self):
-        return self.grn.code + "---" + self.item.name
+    # def __str__(self):
+    #     return self.grn.code + "---" + self.item.name
 
     class Meta:
         db_table = 'grn_details'

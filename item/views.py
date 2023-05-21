@@ -3,9 +3,24 @@ from django.http import HttpResponseRedirect
 from .forms import ItemTypeForm, ItemForm, UomForm
 from django.views.generic import View
 from .models import Item, ItemType, Uom
+from grn.models import *
+from store.models import *
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, QueryDict
+
+
+class DashboardView(View):
+    template_name = "dashboard/dashboard.html"
+
+    def get(self, request):
+        total_item = Item.objects.all().count()
+        total_grn = Grn.objects.all().count()
+        total_stock = Stock.objects.all().count()
+        total_store = Store.objects.all().count()
+        context = {"total_item": total_item, "total_grn": total_grn,
+                   "total_stock": total_stock, "total_store": total_store}
+        return render(request, self.template_name, context)
 
 
 class ItemTypeView(View):

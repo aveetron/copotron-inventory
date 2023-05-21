@@ -66,8 +66,8 @@
                     <thead>
                     <tr>
                         <th>No</th>
-                        <th>Type</th>
                         <th>Name</th>
+                        <th>Type</th>
                         <th>UoM</th>
                         <th>Description</th>
                         <th>Action</th>
@@ -78,8 +78,8 @@
                         {% for val in items %}
                         <tr>
                             <th>{{ forloop.counter }}</th>
-                            <th>{{ val.item_type.name }}</th>
                             <th>{{ val.name }}</th>
+                            <th>{{ val.item_type.name }}</th>
                             <th>{{ val.uom.name }}</th>
                             <th>{{ val.description }}</th>
                             <th>
