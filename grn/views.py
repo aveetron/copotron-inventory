@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 from .forms import GrnForms, GrnDetailsForms, StockForms
-from .models import Grn, GrnDetails
+from .models import Grn, GrnDetails, Stock
 from item.models import Item
 from store.models import Store
 from django.contrib import messages
@@ -87,3 +87,13 @@ class GrnDetailView(View):
                 id=grn_detail['item_id']).values()
             grn_detail['item_id'] = itemName[0]['name']
         return JsonResponse({'grn': list(grn), "grn_details": list(grn_details), "storeName": list(storeName)})
+
+
+class StockView(View):
+    template_name = "stock/stock.html"
+
+    def get(self, request):
+        stocks = Stock.objects.all()
+        context = {"stocks": stocks}
+        return render(request, self.template_name, context)
+

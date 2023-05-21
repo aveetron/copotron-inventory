@@ -1,0 +1,315 @@
+{% extends 'base.html' %} {% load static %} {% block main %}
+<div class="dashboard-wrapper">
+  <div class="dashboard-ecommerce">
+    <div class="container-fluid dashboard-content">
+      <div class="container-fluid">
+        <!-- Content Row -->
+      <div class="row">
+      <!-- Content Column -->
+          <div class="col-lg-12 col-md-12 mb-4">
+              <!-- Project Card Example -->
+              <div class="card shadow mb-4">
+              <div class="card-header py-6">
+                  <h4 class="m-0 font-weight-bold text-center text-primary">Stock List</h4>
+              </div>
+              <div class="card-body">
+                  <div class="table-responsive">
+                  <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                      <thead>
+                      <tr>
+                          <th>No</th>
+                          <th>Item</th>
+                          <th>Store</th>
+                          <th>QTY</th>
+
+                      </tr>
+                      </thead>
+                      <tbody>
+                          {% for val in stocks %}
+                          <tr>
+                              <th>{{ forloop.counter }}</th>
+                              <th>{{ val.item.name }}</th>
+                              <th>{{ val.store.name }}</th>
+                              <th>{{ val.quantity }}</th>
+                          </tr>
+                          {% endfor %}
+                      </tbody>
+                  </table>
+                  </div>
+              </div>
+              </div>
+          </div>
+          </div>
+      </div>
+   </div>
+
+  </div>
+  <div class="container">
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>ADD GRN</h3>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+            <form
+              method="POST"
+              id="addCatagory"
+              action=""
+              enctype="multipart/form-data"
+            >
+              {% csrf_token %}
+
+              <div class="row">
+                <div class="form-group col-md-12">
+                  <label
+                    for="exampleFormControlInput1"
+                    class="font-weight-bold text-primary"
+                    >Store</label
+                  >
+                  <select id="store" class="form-control" name="store">
+                    <option selected disabled>Select Store</option>
+                    {% for store in stores %}
+                    <option value="{{store.id}}">{{store.name}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-12">
+                <div class="panel panel-white">
+                  <div class="panel-body">
+                    {% for pd in poDetails %}
+                    <div class="row">
+                      <input type="hidden" name="grn" value="{{ pd.id }}" />
+
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <select class="form-control m-b-sm po_size" name="item">
+                            <option value="{{ pd.item.id }}" selected>
+                              {{ pd.item.name }}
+                            </option>
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="qty"
+                            placeholder="1000..."
+                            value="{{ pd.quantity }}"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            name="price"
+                            placeholder="Price"
+                            value="{{ pd.price }}"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-2">
+                        <button
+                          type="button"
+                          class="btn btn-danger"
+                          style="margin-top: 1px"
+                          id="remove"
+                        >
+                          <i class="fa fa-close"></i>
+                        </button>
+                      </div>
+                    </div>
+                    {% endfor %}
+                    <div class="row duplicateMe">
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <select
+                            id="item"
+                            class="form-control"
+                            name="item"
+                            required
+                          >
+                            <option selected disabled>Select Item</option>
+                            {% for item in items %}
+                            <option value="{{item.id}}">{{item.name}}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            name="quantity"
+                            required="required"
+                            class="form-control quantity"
+                            min="0"
+                            placeholder="quantity"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <div class="form-group">
+                          <input
+                            type="number"
+                            name="price"
+                            required="required"
+                            class="form-control price"
+                            min="0"
+                            placeholder="price"
+                          />
+                        </div>
+                      </div>
+                      <div class="col-md-3">
+                        <button
+                          type="button"
+                          class="btn btn-success btn-rounded"
+                          style="margin-top: 1px"
+                          id="repeat"
+                        >
+                          <i class="fa fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-sm-6 col-form-label"></label>
+                  <button class="btn btn-block btn-success btn-rounded">
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="modal fade" id="myModal1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Grn Details View</h3>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+            <h4 class="modal-title"></h4>
+          </div>
+          <div class="modal-body">
+           <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6">
+                <label for="Grn">GRN NO: </label>
+              </div>
+              <div class="col-md-6">
+                <b id="grn_no"> </b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="Store">Store: </label>
+              </div>
+              <div class="col-md-4">
+                <b class="Store1"> </b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label for="total_price">Total Price: </label>
+              </div>
+              <div class="col-md-6">
+                <b class="total_price"> </b>
+              </div>
+            </div>
+            <div class="row">
+              <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                </thead>
+                <tbody id="innerTable">
+
+                </tbody>
+            </table>
+            </div>
+           </div>
+          </div>
+          <div class="modal-footer"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+<script>
+  $(".edit_grn_btn").click(function () {
+    $.ajax({
+      url: "{% url 'grn-details' %}",
+      type: "GET",
+      data: { id: $(this).data("id") },
+      dataType: "json",
+      success: function (json) {
+        console.log(json);
+        $("#grn_no").html(json.grn[0].code);
+        $(".Store1").html(json.storeName[0].name);
+        $(".total_price").html(json.grn[0].total_price);
+        $("#innerTable").html(
+          json.grn_details.map((item) => {
+            return `<tr>
+                        <td>${item.item_id}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.price}</td>
+                    </tr>`;
+          })
+        );
+
+
+      }
+    });
+  });
+  $("body").on("click", "#repeat", function () {
+    $duplicate = $(".duplicateMe");
+
+    $duplicate.find("span").remove();
+
+    var clone = $duplicate.html();
+    $(".duplicateMe")
+      .parent()
+      .append('<div class="row duplicateMe">' + clone + "</div>");
+    $(this)
+      .parent()
+      .append(
+        '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
+      );
+    $(this).remove();
+    $duplicate.removeClass("duplicateMe");
+  });
+
+  // Remove Form data
+  $("body").on("click", "#remove", function () {
+    $(this).parent().parent().remove();
+  });
+</script>
+{% endblock %}
