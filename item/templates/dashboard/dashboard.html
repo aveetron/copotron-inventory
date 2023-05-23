@@ -15,36 +15,46 @@
             <h4 class="m-0 font-weight-bold text-primary" >Inventory Dashboard</h4>
         </div>
         <div class="card-body" align="center">
-            <form method="POST" id="addUom" action="{% url 'item' %}">
-                {% csrf_token %}
-                <div class="row">
-                    <div class="col-2">
-                        <select name="item_type" class="form-control enable-select2">
-                            <option>Item Type</option>
-                            {% for val in item_types %}
-                                <option value="{{val.id}}">{{val.name}}</option>
-                            {% endfor %}
-                        </select>
+            <div class="row">
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <p class="card-title">Total Stock Item</p>
+                        <h3 class="card-text">{{total_stock}}</h3>
+                        <a href="{% url 'stocks' %}" class="btn btn-primary">Go to stock list</a>
+                      </div>
                     </div>
-                    <div class="col-3">
-                        <input type="text" name="name"  class="form-control" placeholder="Enter item name" required>
-                    </div>
-                    <div class="col-2">
-                        <select name="uom" class="form-control js-example-basic-single">
-                            <option>UoM</option>
-                            {% for uom in uoms %}
-                                <option value="{{uom.id}}">{{uom.name}}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-3">
-                        <input type="text" name="description"  class="form-control" placeholder="Enter item description">
-                    </div>
-                    <div class="col-2">
-                    <button class="btn btn-success">Submit</button>
                 </div>
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <p class="card-title">Total Good Receive Item</p>
+                        <h3 class="card-text">{{total_grn}}</h3>
+                        <a href="{% url 'grn' %}" class="btn btn-primary">Go to goods receive list</a>
+                      </div>
+                    </div>
                 </div>
-            </form>
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <p class="card-title">Total Store</p>
+                        <h3 class="card-text">{{total_store}}</h3>
+                        <a href="{% url 'store' %}" class="btn btn-primary">Go to store list</a>
+                      </div>
+                    </div>
+                </div>
+            </div><br>
+            <div class="row">
+                <div class="col-4">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <p class="card-title">Total Items</p>
+                        <h3 class="card-text">{{total_item}}</h3>
+                        <a href="{% url 'item' %}" class="btn btn-primary">Go to item list</a>
+                      </div>
+                    </div>
+                </div>
+            </div>
         </div>
         </div>
     </div>
