@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block main %}
+{% extends 'base.html' %}
+{% load static %}
+{% block main %}
 <div class="dashboard-wrapper">
   <div class="dashboard-ecommerce">
     <div class="container-fluid dashboard-content">
@@ -14,7 +16,7 @@
                   class="btn btn-primary btn-rounded "
                   data-target="#myModal"
                   data-toggle="modal"
-                  >Add GRN</a
+                  >Add stock out</a
                 >
               </div>
             </div>
@@ -23,62 +25,62 @@
       </div>
       <div class="container-fluid">
         <!-- Content Row -->
-      <div class="row">
-      <!-- Content Column -->
-          <div class="col-lg-12 col-md-12 mb-4">
-              <!-- Project Card Example -->
-              <div class="card shadow mb-4">
-              <div class="card-header py-6">
-                  <h4 class="m-0 font-weight-bold text-center text-primary">GRN List</h4>
-              </div>
-              <div class="card-body">
-                  <div class="table-responsive">
-                  <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
-                      <tr>
-                          <th>No</th>
-                          <th>GRN No</th>
-                          <th>Total Price</th>
-                          <th>Store</th>
-                          <th>View</th>
-                          
-                      </tr>
-                      </thead>
-                      <tbody>
-                          {% for val in grns %}
+          <div class="row">
+          <!-- Content Column -->
+              <div class="col-lg-12 col-md-12 mb-4">
+                  <!-- Project Card Example -->
+                  <div class="card shadow mb-4">
+                  <div class="card-header py-6">
+                      <h4 class="m-0 font-weight-bold text-center text-primary">Stock out list</h4>
+                  </div>
+                  <div class="card-body">
+                      <div class="table-responsive">
+                      <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
                           <tr>
-                              <th>{{ forloop.counter }}</th>
-                              <th>{{ val.code }}</th>
-                              <th>{{ val.total_price }}</th>
-                              <th>{{ val.store.name }}</th>
-                              <th>
-                                  <a data-id="{{ val.id }}" data-target="#myModal1"
-                                      data-toggle="modal" class="edit_grn_btn">
-                                      <button class="btn btn-warning btn-circle">
-                                          <i class="fas fa-exclamation-triangle"></i>
-                                      </button>
-                                  </a>
-                              </th>
+                              <th>No</th>
+                              <th>GRN No</th>
+                              <th>Total Price</th>
+                              <th>Store</th>
+                              <th>View</th>
+
                           </tr>
-                          </tr>
-                          {% endfor %}
-                      </tbody>
-                  </table>
+                          </thead>
+                          <tbody>
+                              {% for val in grns %}
+                              <tr>
+                                  <th>{{ forloop.counter }}</th>
+                                  <th>{{ val.code }}</th>
+                                  <th>{{ val.total_price }}</th>
+                                  <th>{{ val.store.name }}</th>
+                                  <th>
+                                      <a data-id="{{ val.id }}" data-target="#myModal1"
+                                          data-toggle="modal" class="edit_grn_btn">
+                                          <button class="btn btn-warning btn-circle">
+                                              <i class="fas fa-exclamation-triangle"></i>
+                                          </button>
+                                      </a>
+                                  </th>
+                              </tr>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                      </div>
+                  </div>
                   </div>
               </div>
               </div>
           </div>
-          </div>
-      </div>
    </div>
-  
+
   </div>
   <div class="container">
-    <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
-      <div class="modal-dialog modal-lg">
+    <div class="modal fade bd-example-modal-xl" id="myModal" role="dialog">
+      <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
-            <h3>ADD GRN</h3>
+            <h3>Create stock out</h3>
             <button type="button" class="close" data-dismiss="modal">
               &times;
             </button>
@@ -92,23 +94,7 @@
               enctype="multipart/form-data"
             >
               {% csrf_token %}
-  
-              <div class="row">
-                <div class="form-group col-md-12">
-                  <label
-                    for="exampleFormControlInput1"
-                    class="font-weight-bold text-primary"
-                    >Store</label
-                  >
-                  <select id="store" class="form-control" name="store">
-                    <option selected disabled>Select Store</option>
-                    {% for store in stores %}
-                    <option value="{{store.id}}">{{store.name}}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-  
+
               <div class="col-md-12">
                 <div class="panel panel-white">
                   <div class="panel-body">
@@ -118,7 +104,7 @@
 
                       <div class="col-md-3">
                         <div class="form-group">
-                          <select class="form-control m-b-sm po_size" name="item">
+                          <select class="form-control m-b-sm po_size" name="stock">
                             <option value="{{ pd.item.id }}" selected>
                               {{ pd.item.name }}
                             </option>
@@ -130,23 +116,13 @@
                           <input
                             type="number"
                             class="form-control"
-                            name="qty"
+                            name="quantity"
                             placeholder="1000..."
                             value="{{ pd.quantity }}"
                           />
                         </div>
                       </div>
-                      <div class="col-md-4">
-                        <div class="form-group">
-                          <input
-                            type="number"
-                            class="form-control"
-                            name="unit_price"
-                            placeholder="unit price"
-                            value="{{ pd.unit_price }}"
-                          />
-                        </div>
-                      </div>
+
                       <div class="col-md-1">
                         <button
                           type="button"
@@ -169,13 +145,13 @@
                             required
                           >
                             <option selected disabled>Select Item</option>
-                            {% for item in items %}
-                            <option value="{{item.id}}">{{item.name}}</option>
+                            {% for stock in stocks %}
+                            <option value="{{stock.id}}">{{stock.item.name}}</option>
                             {% endfor %}
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-2">
                         <div class="form-group">
                           <input
                             type="number"
@@ -187,15 +163,14 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <input
-                            type="number"
-                            name="unit_price"
+                            type="text"
+                            name="remarks"
                             required="required"
-                            class="form-control unit_price"
-                            min="0"
-                            placeholder="unit price"
+                            class="form-control remarks"
+                            placeholder="reason for stock out"
                           />
                         </div>
                       </div>
@@ -277,7 +252,7 @@
                 <tbody id="innerTable">
 
                 </tbody>
-            </table> 
+            </table>
             </div>
            </div>
           </div>
@@ -287,7 +262,7 @@
     </div>
   </div>
 </div>
-  
+
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -314,7 +289,7 @@
           })
         );
 
-        
+
       }
     });
   });

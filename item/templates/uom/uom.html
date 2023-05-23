@@ -12,18 +12,17 @@
         <!-- Project Card Example -->
         <div class="card shadow mb-4">
         <div class="card-header py-6" align="center">
-            <h4 class="m-0 font-weight-bold text-primary" >Uom Master</h4>
+            <h4 class="m-0 font-weight-bold text-primary" >Unit of measurement</h4>
         </div>
         <div class="card-body" align="center">
             <form method="POST" id="addUom" action="{% url 'uom' %}">
                 {% csrf_token %}
                 <div class="row">
-                    
-                    <div class="col-8">
-                        <input type="text" name="name"  class="form-control" placeholder="Enter Uom name" required>
+                    <div class="col-md-8 mb-2">
+                        <input type="text" name="name"  class="form-control" placeholder="UoM name" required>
                     </div>
                    
-                    <div class="col-2">
+                    <div class="col-md-2 text-center">
                     <button class="btn btn-success">Submit</button>
                 </div>
                 </div>

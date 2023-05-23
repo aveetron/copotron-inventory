@@ -43,3 +43,12 @@ class Stock(models.Model):
 
     class Meta:
         db_table = 'stock'
+
+
+class StockOut(models.Model):
+    stock = models.ForeignKey(Stock, on_delete=models.CASCADE, null=True, blank=True)
+    quantity = models.PositiveIntegerField(null=True, blank=True)
+    remarks = models.TextField(null=True, blank=True)
+
+    class Meta:
+        db_table = "stock_out"

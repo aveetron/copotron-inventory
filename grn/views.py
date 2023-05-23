@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
-from .forms import GrnForms, GrnDetailsForms, StockForms
-from .models import Grn, GrnDetails, Stock
+from .forms import GrnForms, GrnDetailsForms, StockForms, StockOutForms
+from .models import Grn, GrnDetails, Stock, StockOut
 from item.models import Item
 from store.models import Store
 from django.contrib import messages
@@ -102,3 +102,17 @@ class StockView(View):
         stocks = Stock.objects.all().order_by("-id")
         context = {"stocks": stocks}
         return render(request, self.template_name, context)
+
+
+class StockOutView(View):
+    template_name = "stock/stock_out.html"
+    form_class = StockOutForms
+
+    def get(self, request):
+        stocks = Stock.objects.all().order_by("-id")
+        stock_outs = StockOut.objects.all().order_by("-id")
+        context = {"stocks": stocks, "stock_outs": stock_outs}
+        return render(request, self.template_name, context)
+
+
+

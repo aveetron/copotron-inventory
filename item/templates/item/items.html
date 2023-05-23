@@ -18,7 +18,7 @@
             <form method="POST" id="addUom" action="{% url 'item' %}">
                 {% csrf_token %}
                 <div class="row">
-                    <div class="col-2">
+                    <div class="col-md-2 mb-2">
                         <select name="item_type" class="form-control enable-select2">
                             <option>Item Type</option>
                             {% for val in item_types %}
@@ -26,10 +26,10 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 mb-2">
                         <input type="text" name="name"  class="form-control" placeholder="Enter item name" required>
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-2 mb-2">
                         <select name="uom" class="form-control js-example-basic-single">
                             <option>UoM</option>
                             {% for uom in uoms %}
@@ -37,10 +37,10 @@
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3 mb-2">
                         <input type="text" name="description"  class="form-control" placeholder="Enter item description">
                     </div>
-                    <div class="col-2">
+                    <div class="col-md-2">
                     <button class="btn btn-success">Submit</button>
                 </div>
                 </div>
