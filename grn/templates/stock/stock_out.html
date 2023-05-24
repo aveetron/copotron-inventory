@@ -39,20 +39,20 @@
                           <thead>
                           <tr>
                               <th>No</th>
-                              <th>GRN No</th>
-                              <th>Total Price</th>
-                              <th>Store</th>
+                              <th>Item</th>
+                              <th>Quantity</th>
+                              <th>remarks</th>
                               <th>View</th>
 
                           </tr>
                           </thead>
                           <tbody>
-                              {% for val in grns %}
+                              {% for val in stock_outs %}
                               <tr>
                                   <th>{{ forloop.counter }}</th>
-                                  <th>{{ val.code }}</th>
-                                  <th>{{ val.total_price }}</th>
-                                  <th>{{ val.store.name }}</th>
+                                  <th>{{ val.stock.item.name }}</th>
+                                  <th>{{ val.quantity }}</th>
+                                  <th>{{ val.remarks }}</th>
                                   <th>
                                       <a data-id="{{ val.id }}" data-target="#myModal1"
                                           data-toggle="modal" class="edit_grn_btn">
