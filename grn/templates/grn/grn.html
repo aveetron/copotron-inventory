@@ -112,53 +112,6 @@
               <div class="col-md-12">
                 <div class="panel panel-white">
                   <div class="panel-body">
-                    {% for pd in poDetails %}
-                    <div class="row">
-                      <input type="hidden" name="grn" value="{{ pd.id }}" />
-  
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <select class="form-control m-b-sm po_size" name="item">
-                            <option value="{{ pd.item.id }}" selected>
-                              {{ pd.item.name }}
-                            </option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <input
-                            type="number"
-                            class="form-control"
-                            name="qty"
-                            placeholder="1000..."
-                            value="{{ pd.quantity }}"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-3">
-                        <div class="form-group">
-                          <input
-                            type="number"
-                            class="form-control"
-                            name="price"
-                            placeholder="Price"
-                            value="{{ pd.price }}"
-                          />
-                        </div>
-                      </div>
-                      <div class="col-md-2">
-                        <button
-                          type="button"
-                          class="btn btn-danger"
-                          style="margin-top: 1px"
-                          id="remove"
-                        >
-                          <i class="fa fa-close"></i>
-                        </button>
-                      </div>
-                    </div>
-                    {% endfor %}
                     <div class="row duplicateMe">
                       <div class="col-md-3">
                         <div class="form-group">
