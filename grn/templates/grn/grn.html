@@ -115,7 +115,7 @@
                     {% for pd in poDetails %}
                     <div class="row">
                       <input type="hidden" name="grn" value="{{ pd.id }}" />
-
+  
                       <div class="col-md-3">
                         <div class="form-group">
                           <select class="form-control m-b-sm po_size" name="item">
@@ -125,7 +125,7 @@
                           </select>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <input
                             type="number"
@@ -136,18 +136,18 @@
                           />
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
                           <input
                             type="number"
                             class="form-control"
-                            name="unit_price"
-                            placeholder="unit price"
-                            value="{{ pd.unit_price }}"
+                            name="price"
+                            placeholder="Price"
+                            value="{{ pd.price }}"
                           />
                         </div>
                       </div>
-                      <div class="col-md-1">
+                      <div class="col-md-2">
                         <button
                           type="button"
                           class="btn btn-danger"
