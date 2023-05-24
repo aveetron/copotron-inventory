@@ -104,6 +104,16 @@ class StockView(View):
         return render(request, self.template_name, context)
 
 
+class StockDetailsView(View):
+    @csrf_exempt
+    def get(self, request):
+        stock_id = request.GET.get('id')
+        print(stock_id)
+        stocks = Stock.objects.filter(id=stock_id).values()
+
+        return JsonResponse({'stocks': list(stocks)})
+
+
 class StockOutView(View):
     template_name = "stock/stock_out.html"
     form_class = StockOutForms
@@ -114,5 +124,29 @@ class StockOutView(View):
         context = {"stocks": stocks, "stock_outs": stock_outs}
         return render(request, self.template_name, context)
 
+    def post(self, request):
+        payload = request.POST
+        stockList = payload.getlist('item')
+        quantityList = payload.getlist('quantity')
+        remarksList = payload.getlist('remarks')
+        zipped = zip(stockList, quantityList, remarksList)
+        total_price = 0
+        for stock, quantity, remarks in zipped:
+            data = {'stock': stock, 'quantity': quantity, 'remarks': remarks}
+            stock_out_serializer = StockOutForms(data)
+            if stock_out_serializer.is_valid():
+                stock_out_serializer.save()
+                # update stock
+                stock_query = Stock.objects.filter(id=stock)
+                if stock_query.exists():
+                    stock = stock_query.last()
+                    stock.quantity = stock.quantity - int(quantity)
+                    stock.save()
 
-
+            else:
+                massage = stock_out_serializer.errors
+                messages.warning(request, massage)
+                return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+        massage = "stock out added"
+        messages.success(request, massage)
+        return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
