@@ -7,4 +7,6 @@ urlpatterns = [
     path("stocks/out/", views.StockOutView.as_view(), name="stock-out"),
     path("stocks/out/details/", views.StockDetailsView.as_view(),
          name="stock-details"),
+    path("stock/return/<int:stock_out_id>/", views.StockReturnView.as_view(),
+         name="stock-return"),
 ]

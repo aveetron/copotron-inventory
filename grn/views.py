@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from .forms import GrnForms, GrnDetailsForms, StockForms, StockOutForms
 from .models import Grn, GrnDetails, Stock, StockOut
@@ -150,3 +150,16 @@ class StockOutView(View):
         massage = "stock out added"
         messages.success(request, massage)
         return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
+
+
+class StockReturnView(View):
+
+    def get(self, request, stock_out_id):
+        stock_out = StockOut.objects.filter(id=stock_out_id).last()
+        stock = Stock.objects.filter(id=stock_out.stock.id).last()
+        stock.quantity += stock_out.quantity
+        stock.save()
+        stock_out.delete()
+        massage = "Stock returned"
+        messages.success(request, massage)
+        return redirect("stocks")

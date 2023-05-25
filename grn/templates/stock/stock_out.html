@@ -37,32 +37,29 @@
                       <div class="table-responsive">
                       <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
                           <thead>
-                          <tr>
-                              <th>No</th>
-                              <th>GRN No</th>
-                              <th>Total Price</th>
-                              <th>Store</th>
-                              <th>View</th>
-
-                          </tr>
+                              <tr>
+                                  <th>No</th>
+                                  <th>Item</th>
+                                  <th>Quantity</th>
+                                  <th>Remarks</th>
+                                  <th>Return product</th>
+                              </tr>
                           </thead>
                           <tbody>
-                              {% for val in grns %}
-                              <tr>
-                                  <th>{{ forloop.counter }}</th>
-                                  <th>{{ val.code }}</th>
-                                  <th>{{ val.total_price }}</th>
-                                  <th>{{ val.store.name }}</th>
-                                  <th>
-                                      <a data-id="{{ val.id }}" data-target="#myModal1"
-                                          data-toggle="modal" class="edit_grn_btn">
-                                          <button class="btn btn-warning btn-circle">
-                                              <i class="fas fa-exclamation-triangle"></i>
-                                          </button>
-                                      </a>
-                                  </th>
-                              </tr>
-                              </tr>
+                              {% for stock_out in stock_outs %}
+                                  <tr>
+                                      <th>{{ forloop.counter }}</th>
+                                      <th>{{ stock_out.stock.item.name }}</th>
+                                      <th>{{ stock_out.quantity }}</th>
+                                      <th>{{ stock_out.remarks }}</th>
+                                      <th>
+                                          <a href="{% url 'stock-return' stock_out.id %}">
+                                              <button class="btn btn-primary">
+                                                  <i class="fa fa-undo"></i>
+                                              </button>
+                                          </a>
+                                      </th>
+                                  </tr>
                               {% endfor %}
                           </tbody>
                       </table>
