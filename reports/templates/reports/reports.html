@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="container-fluid">
+
+      <!-- Content Row -->
+    <div class="row">
+    <!-- Content Column -->
+        <div class="col-lg-12 col-md-12 mb-4">
+        <!-- Project Card Example -->
+        <div class="card shadow mb-4">
+        <div class="card-header py-6">
+            <h4 class="m-0 font-weight-bold text-primary">Report</h4>
+        </div>
+        <form method="POST" action="{% url 'reports' %}">
+            {% csrf_token %}
+            <div class="card-body row">
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label for="exampleFormControlInput1" class="font-weight-bold text-primary">From Date</label>
+                        <input type="date" name="fromDate"  class="form-control fromDate"  required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label for="exampleFormControlInput1" class="font-weight-bold text-primary">To Date</label>
+                        <input type="date" name="toDate"  class="form-control toDate" required>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group col-md-12">
+                        <label for="exampleFormControlInput1" class="font-weight-bold text-primary">Select Report</label>
+                        <select class="form-control reportType" name="reportType" required>
+                            <option selected disabled>Select</option>
+                            <option value="1">Items Report</option>
+                            <option value="2">Store Report</option>
+                            <option value="3">Good Receive Report</option>
+                            <option value="4">Stock Report</option>
+                            <option value="5">Stock Out Report</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label></label>
+                    <label></label>
+                    <div class="form-group col-md-12 row">
+                        <div class="form-group col-md-6 mt-2">
+                            <button type="submit" class="btn btn-primary">Download</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+{% endblock %}
