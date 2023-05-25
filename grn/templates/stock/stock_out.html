@@ -42,6 +42,7 @@
                                   <th>Item</th>
                                   <th>Quantity</th>
                                   <th>Remarks</th>
+                                  <th>Created At</th>
                                   <th>Return product</th>
                               </tr>
                           </thead>
@@ -52,6 +53,7 @@
                                       <th>{{ stock_out.stock.item.name }}</th>
                                       <th>{{ stock_out.quantity }}</th>
                                       <th>{{ stock_out.remarks }}</th>
+                                      <th>{{ stock_out.created_at }}</th>
                                       <th>
                                           <a href="{% url 'stock-return' stock_out.id %}">
                                               <button class="btn btn-primary">

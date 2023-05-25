@@ -1,9 +1,9 @@
 from django.db import models
-from item.models import Item
+from item.models import Item, InventoryBaseModel
 from store.models import Store
 
 
-class Grn(models.Model):
+class Grn(InventoryBaseModel):
     code = models.CharField(max_length=100, null=True, blank=True)
     total_price = models.PositiveIntegerField(null=True, blank=True)
     store = models.ForeignKey(
@@ -16,7 +16,7 @@ class Grn(models.Model):
         db_table = 'grn'
 
 
-class GrnDetails(models.Model):
+class GrnDetails(InventoryBaseModel):
     grn = models.ForeignKey(
         Grn, on_delete=models.CASCADE, null=True, blank=True)
     item = models.ForeignKey(
@@ -31,7 +31,7 @@ class GrnDetails(models.Model):
         db_table = 'grn_details'
 
 
-class Stock(models.Model):
+class Stock(InventoryBaseModel):
     item = models.ForeignKey(
         Item, on_delete=models.CASCADE, null=True, blank=True, related_name="stock_item")
     quantity = models.PositiveIntegerField(null=True, blank=True)
@@ -45,7 +45,7 @@ class Stock(models.Model):
         db_table = 'stock'
 
 
-class StockOut(models.Model):
+class StockOut(InventoryBaseModel):
     stock = models.ForeignKey(
         Stock, on_delete=models.CASCADE, null=True, blank=True)
     quantity = models.PositiveIntegerField(null=True, blank=True)

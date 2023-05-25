@@ -40,6 +40,7 @@
                           <th>GRN No</th>
                           <th>Total Price</th>
                           <th>Store</th>
+                          <th>Created At</th>
                           <th>View</th>
                           
                       </tr>
@@ -51,6 +52,7 @@
                               <th>{{ val.code }}</th>
                               <th>{{ val.total_price }}</th>
                               <th>{{ val.store.name }}</th>
+                              <th> {{ val.created_at}}</th>
                               <th>
                                   <a data-id="{{ val.id }}" data-target="#myModal1"
                                       data-toggle="modal" class="edit_grn_btn">
