@@ -13,5 +13,8 @@ item/__pycache__
 /grn/__pycache__
 /stock/migrations
 /stock/__pycache__
+/reports/__pycache__
+/reports/migrations
 env
 db.sqlite3
+.idea

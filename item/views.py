@@ -18,8 +18,10 @@ class DashboardView(View):
         total_grn = Grn.objects.all().count()
         total_stock = Stock.objects.all().count()
         total_store = Store.objects.all().count()
+        total_stock_out = StockOut.objects.all().count()
         context = {"total_item": total_item, "total_grn": total_grn,
-                   "total_stock": total_stock, "total_store": total_store}
+                   "total_stock": total_stock, "total_store": total_store,
+                   "total_stock_out": total_stock_out}
         return render(request, self.template_name, context)
 
 
