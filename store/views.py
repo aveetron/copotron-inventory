@@ -6,6 +6,9 @@ from .models import Store
 from .forms import StoreForm
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, QueryDict
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
+
 
 
 class StoreView(View):
@@ -13,10 +16,12 @@ class StoreView(View):
     template_name = "store.html"
 
     def get(self, request):
+        print(request.user)
         stores = Store.objects.all().order_by("-id")
         context = {"stores": stores}
         return render(request, self.template_name, context)
 
+    @login_required(login_url="loginPage")
     def post(self, request):
         try:
             payload = request.POST
@@ -40,6 +45,7 @@ class StoreView(View):
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
+@method_decorator(login_required, name='dispatch')
 class StoreDetailsView(View):
     form_class = StoreForm
     template_name = "store.html"
