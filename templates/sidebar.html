@@ -80,93 +80,10 @@
       <span>Reports</span>
     </a>
   </li>
-  {% if request.user.is_superuser is True or request.user.is_staff is True %}
-  <!-- <li class="nav-item">
-    <a class="nav-link" href="">
-      <i class="fas fa-fw fa fa-table"></i>
-      <span>Report</span>
-    </a>
-  </li> -->
-  {% endif %} {% if request.user.is_superuser is True %}
-
-      <!-- Nav Item - Pages Collapse Menu -->
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'item-type' %}">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Item Type</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'uom' %}">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Unit of Measurement</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'store' %}">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Store</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'item' %}">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Item</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'grn' %}">
-          <i class="fas fa-fw fa fa-users"></i>
-          <span>Good Receive Note</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'stocks' %}">
-          <i class="fas fa-fw fa fa-tree"></i>
-          <span>Stock list</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'stock-out' %}">
-          <i class="fas fa-fw fa fa-briefcase"></i>
-          <span>Stock Out & Return</span>
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'reports' %}">
-          <i class="fas fa-fw fa fa-briefcase"></i>
-          <span>Reports</span>
-        </a>
-      </li>
-      {% if request.user.is_superuser is True or request.user.is_staff is True %}
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="fas fa-fw fa fa-table"></i>
-            <span>Report</span>
-          </a>
-        </li>
-      {% endif %}
-      
-      {% if request.user.is_superuser is True %}
-      
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="fas fa-fw fa fa-table"></i>
-            <span>Admin Chalan Dashboard</span>
-          </a>
-        </li>
-        
-        
-      {% endif %}
-
-  {% endif %} {% if request.user.is_superuser is True %}
-
   <li class="nav-item">
     <a class="nav-link" href="{% url 'userList'%}">
       <i class="fas fa-fw fa fa-female"></i>
       <span>User List</span>
     </a>
   </li>
-
-  {% endif %}
 </ul>
