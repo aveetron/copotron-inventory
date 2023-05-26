@@ -1,31 +1,93 @@
-{% load static %} 
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+{% load static %}
+<ul
+  class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+  id="accordionSidebar"
+>
+  <!-- Sidebar - Brand -->
+  <a
+    class="sidebar-brand d-flex align-items-center justify-content-center"
+    href="{% url 'dashboard' %}"
+  >
+    <!--        <div class="sidebar-brand-icon rotate-n-15">-->
+    <!--          <i class="fas fa-balance-scale-right"></i>-->
+    <!--        </div>-->
+    <div class="sidebar-brand-text mx-3">Copotron Inventory</div>
+  </a>
 
-      <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'dashboard' %}">
-<!--        <div class="sidebar-brand-icon rotate-n-15">-->
-<!--          <i class="fas fa-balance-scale-right"></i>-->
-<!--        </div>-->
-        <div class="sidebar-brand-text mx-3">Copotron Inventory</div>
-      </a>
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0" />
 
-      <!-- Divider -->
-      <hr class="sidebar-divider my-0">
+  <!-- Nav Item - Dashboard -->
+  <li class="nav-item active">
+    <a class="nav-link" href="{% url 'dashboard' %}">
+      <i class="fas fa-fw fa-tachometer-alt"></i>
+      <span>Dashboard</span></a
+    >
+  </li>
 
-      <!-- Nav Item - Dashboard -->
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'dashboard' %}">
-          <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Dashboard</span></a>
-      </li>
+  <!-- Divider -->
+  <hr class="sidebar-divider" />
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
+  <!-- Heading -->
+  <div class="sidebar-heading"></div>
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        
-      </div>
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'item-type' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Item Type</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'uom' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Unit of Measurement</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'store' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Store</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'item' %}">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Item</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'grn' %}">
+      <i class="fas fa-fw fa fa-users"></i>
+      <span>Good Receive Note</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'stocks' %}">
+      <i class="fas fa-fw fa fa-tree"></i>
+      <span>Stock list</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'stock-out' %}">
+      <i class="fas fa-fw fa fa-briefcase"></i>
+      <span>Stock Out</span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'reports' %}">
+      <i class="fas fa-fw fa fa-briefcase"></i>
+      <span>Reports</span>
+    </a>
+  </li>
+  {% if request.user.is_superuser is True or request.user.is_staff is True %}
+  <!-- <li class="nav-item">
+    <a class="nav-link" href="">
+      <i class="fas fa-fw fa fa-table"></i>
+      <span>Report</span>
+    </a>
+  </li> -->
+  {% endif %} {% if request.user.is_superuser is True %}
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
@@ -97,14 +159,14 @@
         
       {% endif %}
 
-      {% if request.user.is_superuser is True %}
-      
-        <li class="nav-item">
-          <a class="nav-link" href="">
-            <i class="fas fa-fw fa fa-female"></i>
-            <span>User List</span>
-          </a>
-        </li>
-        
-      {% endif %}
-    </ul>
+  {% endif %} {% if request.user.is_superuser is True %}
+
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'userList'%}">
+      <i class="fas fa-fw fa fa-female"></i>
+      <span>User List</span>
+    </a>
+  </li>
+
+  {% endif %}
+</ul>

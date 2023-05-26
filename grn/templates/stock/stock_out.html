@@ -1,6 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block main %}
+{% extends 'base.html' %} {% load static %} {% block main %}
 <div class="dashboard-wrapper">
   <div class="dashboard-ecommerce">
     <div class="container-fluid dashboard-content">
@@ -13,7 +11,7 @@
             <div class="card shadow">
               <div class="card-header py-6">
                 <a
-                  class="btn btn-primary btn-rounded "
+                  class="btn btn-primary btn-rounded"
                   data-target="#myModal"
                   data-toggle="modal"
                   >Add stock out</a
@@ -25,54 +23,60 @@
       </div>
       <div class="container-fluid">
         <!-- Content Row -->
-          <div class="row">
+        <div class="row">
           <!-- Content Column -->
-              <div class="col-lg-12 col-md-12 mb-4">
-                  <!-- Project Card Example -->
-                  <div class="card shadow mb-4">
-                  <div class="card-header py-6">
-                      <h4 class="m-0 font-weight-bold text-center text-primary">Stock out list</h4>
-                  </div>
-                  <div class="card-body">
-                      <div class="table-responsive">
-                      <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                          <thead>
-                              <tr>
-                                  <th>No</th>
-                                  <th>Item</th>
-                                  <th>Quantity</th>
-                                  <th>Remarks</th>
-                                  <th>Created At</th>
-                                  <th>Return product</th>
-                              </tr>
-                          </thead>
-                          <tbody>
-                              {% for stock_out in stock_outs %}
-                                  <tr>
-                                      <th>{{ forloop.counter }}</th>
-                                      <th>{{ stock_out.stock.item.name }}</th>
-                                      <th>{{ stock_out.quantity }}</th>
-                                      <th>{{ stock_out.remarks }}</th>
-                                      <th>{{ stock_out.created_at }}</th>
-                                      <th>
-                                          <a href="{% url 'stock-return' stock_out.id %}">
-                                              <button class="btn btn-primary">
-                                                  <i class="fa fa-undo"></i>
-                                              </button>
-                                          </a>
-                                      </th>
-                                  </tr>
-                              {% endfor %}
-                          </tbody>
-                      </table>
-                      </div>
-                  </div>
-                  </div>
+          <div class="col-lg-12 col-md-12 mb-4">
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-6">
+                <h4 class="m-0 font-weight-bold text-center text-primary">
+                  Stock out list
+                </h4>
               </div>
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table
+                    class="table table-bordered text-center"
+                    id="dataTable"
+                    width="100%"
+                    cellspacing="0"
+                  >
+                    <thead>
+                      <tr>
+                        <th>No</th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Remarks</th>
+                        <th>Created At</th>
+                        <th>Return product</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for stock_out in stock_outs %}
+                      <tr>
+                        <th>{{ forloop.counter }}</th>
+                        <th>{{ stock_out.stock.item.name }}</th>
+                        <th>{{ stock_out.quantity }}</th>
+                        <th>{{ stock_out.remarks }}</th>
+                        <th>{{ stock_out.created_at }}</th>
+                        <th>
+                          <a href="{% url 'stock-return' stock_out.id %}">
+                            <button class="btn btn-primary">
+                              <i class="fa fa-undo"></i>
+                            </button>
+                          </a>
+                        </th>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
               </div>
+            </div>
           </div>
-   </div>
-
+        </div>
+      </div>
+    </div>
   </div>
   <div class="container">
     <div class="modal fade bd-example-modal-xl" id="myModal" role="dialog">
@@ -108,7 +112,9 @@
                           >
                             <option selected disabled>Select Item</option>
                             {% for stock in stocks %}
-                            <option value="{{stock.id}}">{{stock.item.name}}</option>
+                            <option value="{{stock.id}}">
+                              {{stock.item.name}}
+                            </option>
                             {% endfor %}
                           </select>
                         </div>
@@ -177,46 +183,49 @@
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
-           <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-6">
-                <label for="Grn">GRN NO: </label>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="Grn">GRN NO: </label>
+                </div>
+                <div class="col-md-6">
+                  <b id="grn_no"> </b>
+                </div>
               </div>
-              <div class="col-md-6">
-                <b id="grn_no"> </b>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="Store">Store: </label>
+                </div>
+                <div class="col-md-4">
+                  <b class="Store1"> </b>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="total_price">Total Price: </label>
+                </div>
+                <div class="col-md-6">
+                  <b class="total_price"> </b>
+                </div>
+              </div>
+              <div class="row">
+                <table
+                  class="table table-bordered text-center"
+                  id="dataTable"
+                  width="100%"
+                  cellspacing="0"
+                >
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="innerTable"></tbody>
+                </table>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <label for="Store">Store: </label>
-              </div>
-              <div class="col-md-4">
-                <b class="Store1"> </b>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <label for="total_price">Total Price: </label>
-              </div>
-              <div class="col-md-6">
-                <b class="total_price"> </b>
-              </div>
-            </div>
-            <div class="row">
-              <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Unit Price</th>
-                </tr>
-                </thead>
-                <tbody id="innerTable">
-
-                </tbody>
-            </table>
-            </div>
-           </div>
           </div>
           <div class="modal-footer"></div>
         </div>
@@ -224,8 +233,6 @@
     </div>
   </div>
 </div>
-
-
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
@@ -250,9 +257,7 @@
                     </tr>`;
           })
         );
-
-
-      }
+      },
     });
   });
   $("body").on("click", "#repeat", function () {
@@ -279,7 +284,7 @@
   });
   //get the value from the dropdown item
   $("body").on("change", "#itemList", function () {
-    let item=$("#itemList").find(":selected").val()
+    let item = $("#itemList").find(":selected").val();
     console.log(item);
     $.ajax({
       url: "{% url 'stock-details' %}",
@@ -293,9 +298,8 @@
 
         //loop through the array
         $(".quantity").attr("max", json.stocks[0].quantity);
-      }
+      },
     });
-  })
-  
+  });
 </script>
 {% endblock %}

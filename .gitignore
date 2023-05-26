@@ -18,3 +18,5 @@ item/__pycache__
 env
 db.sqlite3
 .idea
+users/migrations/
+users/__pycache__/

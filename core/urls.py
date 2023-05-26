@@ -10,4 +10,5 @@ urlpatterns = [
     path("grn/", include("grn.urls")),
     path("", DashboardView.as_view(), name="dashboard"),
     path("reports/", ReportView.as_view(), name='reports'),
+    path("users/", include("users.urls")),
 ]
