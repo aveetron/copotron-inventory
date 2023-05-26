@@ -21,7 +21,7 @@ class StoreView(View):
         context = {"stores": stores}
         return render(request, self.template_name, context)
 
-    @login_required(login_url="loginPage")
+
     def post(self, request):
         try:
             payload = request.POST

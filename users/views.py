@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import *
 import datetime
 from datetime import datetime
-from django.contrib.auth.models import User
+from users.models import AuthUser
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib import auth
@@ -21,19 +20,17 @@ class LoginView(View):
 
     def post(self, request):
         try:
-            username = request.POST.get("username")
+            email = request.POST.get("email")
             password = request.POST.get("password")
-            if username and password:
-                user = authenticate(username=username, password=password)
+            if email and password:
+                user = AuthUser.objects.filter(email=email, password=password).last()
                 if user is not None:
                     auth_login(request, user)
                     user.save()
-                    print("logged in successfully")
                     message = "you are successfully logged in"
                     messages.success(request, message)
                     return redirect("dashboard")
                 else:
-                    print("wrong username and password")
                     return redirect("login")
             else:
                 print("login failed")
@@ -60,7 +57,7 @@ class RegistrationView(DashboardView):
         lastLogin = datetime.now()
         dateJoined = datetime.now()
         if passwordOne == passwordTwo:
-            User.objects.create_user(
+            user = AuthUser(
                 username=username,
                 first_name=firstName,
                 last_name=lastName,
@@ -72,6 +69,7 @@ class RegistrationView(DashboardView):
                 date_joined=dateJoined,
                 is_active=1,
             )
+            user.save()
             return redirect("login")
         else:
             message = 'Password didnot matched!'

@@ -116,8 +116,8 @@ class ItemView(View):
     template_name = "item/items.html"
 
     def get(self, request):
-        items = Item.objects.all()
-        item_types = ItemType.objects.all()
+        items = Item.objects.all().order_by("-id")
+        item_types = ItemType.objects.all().order_by("-id")
         uoms = Uom.objects.all().order_by("-id")
         context = {"items": items, "item_types": item_types, "uoms": uoms}
         return render(request, self.template_name, context)
