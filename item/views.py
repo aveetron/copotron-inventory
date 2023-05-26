@@ -10,17 +10,6 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, QueryDict
 
 
-# def check_login():
-#     def decorator_wrapper(func):
-#         def warp(request, *args, **kwargs):
-#             if request.user.is_authenticated:
-#                 pass
-#             else:
-#                 return redirect("login")
-#             return warp(request, *args, **kwargs)
-#         return func
-#
-
 class DashboardView(View):
     template_name = "dashboard/dashboard.html"
 
@@ -39,6 +28,7 @@ class DashboardView(View):
             messgae = e.args[0]
             messages.warning(request, messgae)
             return redirect('login')
+
 
 class ItemTypeView(View):
     form_class = ItemTypeForm
@@ -134,6 +124,10 @@ class ItemView(View):
 
     def post(self, request):
         item_data = request.POST
+        item_data = request.POST.copy()
+        item_code = Item.objects.all().count() + 1
+        item_code = "Item-" + str(item_code).zfill(9)
+        item_data['item_code'] = item_code
         item_form = self.form_class(item_data)
         if item_form.is_valid():
             item_form.save()

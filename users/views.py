@@ -104,7 +104,7 @@ class UserView(View):
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect("dashboard")
+        pass
     else:
         return redirect("login")
 
