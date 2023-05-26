@@ -70,7 +70,12 @@
           <span>Stock Out</span>
         </a>
       </li>
-
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'reports' %}">
+          <i class="fas fa-fw fa fa-briefcase"></i>
+          <span>Reports</span>
+        </a>
+      </li>
       {% if request.user.is_superuser is True or request.user.is_staff is True %}
         <li class="nav-item">
           <a class="nav-link" href="">
