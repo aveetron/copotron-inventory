@@ -38,7 +38,7 @@ class LoginView(DashboardView,):
                         print("logged in successfully")
                         message = "you are successfully logged in"
                         messages.success(request, message)
-                        return redirect("home")
+                        return redirect("dashboard")
                     else:
                         print("wrong username and password")
                         return redirect("login")
