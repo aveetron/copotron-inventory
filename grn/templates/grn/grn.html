@@ -119,13 +119,13 @@
                         <div class="form-group">
                           <select
                             id="item"
-                            class="form-control"
+                            class="form-control grn_item"
                             name="item"
                             required
                           >
                             <option selected disabled>Select Item</option>
                             {% for item in items %}
-                            <option value="{{item.id}}">{{item.name}}</option>
+                            <option value="{{item.id}}">{{item.name}} - {{item.description}}</option>
                             {% endfor %}
                           </select>
                         </div>
@@ -273,18 +273,36 @@
       }
     });
   });
+
+
+  // when grn item is clicked
+  let items = [];
+  $("body").on("change", ".grn_item", function(e){
+    e.preventDefault();
+    $tr =  $(this).parent().parent().parent();
+    item_value = $tr.find(".grn_item").val();
+    console.log(item_value);
+    if(items.includes(parseInt(item_value))){
+        console.log("item exists");
+        // disable this quantity field
+        $tr.find(".grn_item").val('');
+    }
+    else{
+        items.push(parseInt(item_value));
+    }
+  });
+
+  console.log(items);
+
+
   $("body").on("click", "#repeat", function () {
     $duplicate = $(".duplicateMe");
 
     $duplicate.find("span").remove();
 
     var clone = $duplicate.html();
-    $(".duplicateMe")
-      .parent()
-      .append('<div class="row duplicateMe">' + clone + "</div>");
-    $(this)
-      .parent()
-      .append(
+    $(".duplicateMe").parent().append('<div class="row duplicateMe">' + clone + "</div>");
+    $(this).parent().append(
         '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
       );
     $(this).remove();

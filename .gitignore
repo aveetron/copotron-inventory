@@ -21,3 +21,5 @@ db.sqlite3
 users/migrations/
 users/__pycache__/
 migrations
+.DS_Store
+.vscode
