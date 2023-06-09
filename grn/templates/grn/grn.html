@@ -123,7 +123,7 @@
                             name="item"
                             required
                           >
-                            <option selected disabled>Select Item</option>
+                            <option value="0" selected disabled>Select Item</option>
                             {% for item in items %}
                             <option value="{{item.id}}">{{item.name}} - {{item.description}}</option>
                             {% endfor %}
@@ -283,7 +283,7 @@
     console.log(item_value);
     if(items.includes(parseInt(item_value))){
         $.notify("item exists");
-        $tr.find(".grn_item").val("");
+        $tr.find('.grn_item').val(0);
     }
     else{
         items.push(parseInt(item_value));
