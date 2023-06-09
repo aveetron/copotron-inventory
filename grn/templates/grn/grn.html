@@ -278,14 +278,12 @@
   // when grn item is clicked
   let items = [];
   $("body").on("change", ".grn_item", function(e){
-    e.preventDefault();
     $tr =  $(this).parent().parent().parent();
     item_value = $tr.find(".grn_item").val();
     console.log(item_value);
     if(items.includes(parseInt(item_value))){
-        console.log("item exists");
-        // disable this quantity field
-        $tr.find(".grn_item").val('');
+        $.notify("item exists");
+        $tr.find(".grn_item").val("");
     }
     else{
         items.push(parseInt(item_value));
@@ -297,9 +295,7 @@
 
   $("body").on("click", "#repeat", function () {
     $duplicate = $(".duplicateMe");
-
     $duplicate.find("span").remove();
-
     var clone = $duplicate.html();
     $(".duplicateMe").parent().append('<div class="row duplicateMe">' + clone + "</div>");
     $(this).parent().append(
@@ -311,6 +307,11 @@
 
   // Remove Form data
   $("body").on("click", "#remove", function () {
+    $tr =  $(this).parent().parent().parent();
+    item_value = $tr.find(".grn_item").val();
+    if(items.includes(parseInt(item_value))){
+        items.splice(parseInt(item_value), 1);
+    }
     $(this).parent().parent().remove();
   });
 </script>
