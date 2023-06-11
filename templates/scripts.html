@@ -1,43 +1,61 @@
- 
- {% load static %}
- 
- <!-- Bootstrap core JavaScript-->
+{% load static %}
 
-  <script src="{% static 'vendor/jquery/jquery.min.js' %} "defer></script>
-  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"defer></script>
+<!-- Bootstrap core JavaScript-->
 
-  <!-- Core plugin JavaScript-->
-  {% comment %} <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"defer></script> {% endcomment %}
+<script src="{% static 'vendor/jquery/jquery.min.js' %} " defer></script>
+<script
+  src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
+  defer
+></script>
 
-  <!-- Custom scripts for all pages-->
-  <script src="{% static 'js/sb-admin-2.min.js' %}"defer></script>
+<!-- Core plugin JavaScript-->
+{% comment %}
+<script
+  src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"
+  defer
+></script>
+{% endcomment %}
 
-  <!-- Page level plugins -->
-  <script src="{% static 'vendor/chart.js/Chart.min.js' %}"defer></script>
+<!-- Custom scripts for all pages-->
+<script src="{% static 'js/sb-admin-2.min.js' %}" defer></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/demo/chart-area-demo.js' %}"defer></script>
-  <script src="{% static 'js/demo/chart-pie-demo.js' %}"defer></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"defer></script>
-  <script src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"defer></script>
-  <script src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"defer></script>
-  <script src="{% static 'js/notify.js' %}"defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-  <script src="{% static 'js/banglaCalender.js'%}"></script>
+<!-- Page level plugins -->
+<script src="{% static 'vendor/chart.js/Chart.min.js' %}" defer></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'js/demo/datatables-demo.js' %}"defer></script>
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/chart-area-demo.js' %}" defer></script>
+<script src="{% static 'js/demo/chart-pie-demo.js' %}" defer></script>
+<script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+  defer
+></script>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"
+  defer
+></script>
+<script
+  src="{% static 'vendor/datatables/jquery.dataTables.min.js' %}"
+  defer
+></script>
+<script
+  src="{% static 'vendor/datatables/dataTables.bootstrap4.min.js' %}"
+  defer
+></script>
+<script src="{% static 'js/notify.js' %}" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="{% static 'js/banglaCalender.js'%}"></script>
 
-   <script>
-    $( document ).ready(function() {
-        {% if messages %}
-            {% for message in messages %}
-                toastr.{{ message.tags }}('{{ message }}');
-            {% endfor %}
-        {% endif %}
+<!-- Page level custom scripts -->
+<script src="{% static 'js/demo/datatables-demo.js' %}" defer></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-    });
-  </script> 
+<script>
+  $( document ).ready(function() {
+      {% if messages %}
+          {% for message in messages %}
+              toastr.{{ message.tags }}('{{ message }}');
+          {% endfor %}
+      {% endif %}
 
+  });
+</script>

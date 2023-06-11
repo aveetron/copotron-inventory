@@ -11,7 +11,7 @@
             <div class="card shadow">
               <div class="card-header py-6">
                 <a
-                  class="btn btn-primary btn-rounded "
+                  class="btn btn-primary btn-rounded"
                   data-target="#myModal"
                   data-toggle="modal"
                   >Add GRN</a
@@ -23,57 +23,65 @@
       </div>
       <div class="container-fluid">
         <!-- Content Row -->
-      <div class="row">
-      <!-- Content Column -->
+        <div class="row">
+          <!-- Content Column -->
           <div class="col-lg-12 col-md-12 mb-4">
-              <!-- Project Card Example -->
-              <div class="card shadow mb-4">
+            <!-- Project Card Example -->
+            <div class="card shadow mb-4">
               <div class="card-header py-6">
-                  <h4 class="m-0 font-weight-bold text-center text-primary">GRN List</h4>
+                <h4 class="m-0 font-weight-bold text-center text-primary">
+                  GRN List
+                </h4>
               </div>
               <div class="card-body">
-                  <div class="table-responsive">
-                  <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                      <thead>
+                <div class="table-responsive">
+                  <table
+                    class="table table-bordered text-center"
+                    id="dataTable"
+                    width="100%"
+                    cellspacing="0"
+                  >
+                    <thead>
                       <tr>
-                          <th>No</th>
-                          <th>GRN No</th>
-                          <th>Total Price</th>
-                          <th>Store</th>
-                          <th>Created At</th>
-                          <th>View</th>
-                          
+                        <th>No</th>
+                        <th>GRN No</th>
+                        <th>Total Price</th>
+                        <th>Store</th>
+                        <th>Created At</th>
+                        <th>View</th>
                       </tr>
-                      </thead>
-                      <tbody>
-                          {% for val in grns %}
-                          <tr>
-                              <th>{{ forloop.counter }}</th>
-                              <th>{{ val.code }}</th>
-                              <th>{{ val.total_price }}</th>
-                              <th>{{ val.store.name }}</th>
-                              <th> {{ val.created_at}}</th>
-                              <th>
-                                  <a data-id="{{ val.id }}" data-target="#myModal1"
-                                      data-toggle="modal" class="edit_grn_btn">
-                                      <button class="btn btn-warning btn-circle">
-                                          <i class="fas fa-exclamation-triangle"></i>
-                                      </button>
-                                  </a>
-                              </th>
-                          </tr>
-                          </tr>
-                          {% endfor %}
-                      </tbody>
+                    </thead>
+                    <tbody>
+                      {% for val in grns %}
+                      <tr>
+                        <th>{{ forloop.counter }}</th>
+                        <th>{{ val.code }}</th>
+                        <th>{{ val.total_price }}</th>
+                        <th>{{ val.store.name }}</th>
+                        <th>{{ val.created_at}}</th>
+                        <th>
+                          <a
+                            data-id="{{ val.id }}"
+                            data-target="#myModal1"
+                            data-toggle="modal"
+                            class="edit_grn_btn"
+                          >
+                            <button class="btn btn-warning btn-circle">
+                              <i class="fas fa-exclamation-triangle"></i>
+                            </button>
+                          </a>
+                        </th>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
                   </table>
-                  </div>
+                </div>
               </div>
-              </div>
+            </div>
           </div>
-          </div>
+        </div>
       </div>
-   </div>
-  
+    </div>
   </div>
   <div class="container">
     <div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
@@ -94,7 +102,7 @@
               enctype="multipart/form-data"
             >
               {% csrf_token %}
-  
+
               <div class="row">
                 <div class="form-group col-md-12">
                   <label
@@ -110,7 +118,7 @@
                   </select>
                 </div>
               </div>
-  
+
               <div class="col-md-12">
                 <div class="panel panel-white">
                   <div class="panel-body">
@@ -123,9 +131,13 @@
                             name="item"
                             required
                           >
-                            <option value="0" selected disabled>Select Item</option>
+                            <option value="0" selected disabled>
+                              Select Item
+                            </option>
                             {% for item in items %}
-                            <option value="{{item.id}}">{{item.name}} - {{item.description}}</option>
+                            <option value="{{item.id}}">
+                              {{item.name}} - {{item.description}}
+                            </option>
                             {% endfor %}
                           </select>
                         </div>
@@ -195,46 +207,49 @@
             <h4 class="modal-title"></h4>
           </div>
           <div class="modal-body">
-           <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-6">
-                <label for="Grn">GRN NO: </label>
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="Grn">GRN NO: </label>
+                </div>
+                <div class="col-md-6">
+                  <b id="grn_no"> </b>
+                </div>
               </div>
-              <div class="col-md-6">
-                <b id="grn_no"> </b>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="Store">Store: </label>
+                </div>
+                <div class="col-md-4">
+                  <b class="Store1"> </b>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="total_price">Total Price: </label>
+                </div>
+                <div class="col-md-6">
+                  <b class="total_price"> </b>
+                </div>
+              </div>
+              <div class="row">
+                <table
+                  class="table table-bordered text-center"
+                  id="dataTable"
+                  width="100%"
+                  cellspacing="0"
+                >
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Qty</th>
+                      <th>Unit Price</th>
+                    </tr>
+                  </thead>
+                  <tbody id="innerTable"></tbody>
+                </table>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-6">
-                <label for="Store">Store: </label>
-              </div>
-              <div class="col-md-4">
-                <b class="Store1"> </b>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-6">
-                <label for="total_price">Total Price: </label>
-              </div>
-              <div class="col-md-6">
-                <b class="total_price"> </b>
-              </div>
-            </div>
-            <div class="row">
-              <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Qty</th>
-                    <th>Unit Price</th>
-                </tr>
-                </thead>
-                <tbody id="innerTable">
-
-                </tbody>
-            </table> 
-            </div>
-           </div>
           </div>
           <div class="modal-footer"></div>
         </div>
@@ -242,77 +257,133 @@
     </div>
   </div>
 </div>
-  
-
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
 <script>
-  $(".edit_grn_btn").click(function () {
-    $.ajax({
-      url: "{% url 'grn-details' %}",
-      type: "GET",
-      data: { id: $(this).data("id") },
-      dataType: "json",
-      success: function (json) {
-        console.log(json);
-        $("#grn_no").html(json.grn[0].code);
-        $(".Store1").html(json.storeName[0].name);
-        $(".total_price").html(json.grn[0].total_price);
-        $("#innerTable").html(
-          json.grn_details.map((item) => {
-            return `<tr>
+  $(document).ready(function () {
+    $(".edit_grn_btn").click(function () {
+      $.ajax({
+        url: "{% url 'grn-details' %}",
+        type: "GET",
+        data: { id: $(this).data("id") },
+        dataType: "json",
+        success: function (json) {
+          console.log(json);
+          $("#grn_no").html(json.grn[0].code);
+          $(".Store1").html(json.storeName[0].name);
+          $(".total_price").html(json.grn[0].total_price);
+          $("#innerTable").html(
+            json.grn_details.map((item) => {
+              return `<tr>
                         <td>${item.item_id}</td>
                         <td>${item.quantity}</td>
                         <td>${item.unit_price}</td>
                     </tr>`;
-          })
-        );
+            })
+          );
+        },
+      });
+    });
 
-        
+    // when grn item is clicked
+    let items = [];
+    $("body").on("change", ".grn_item", function (e) {
+      $tr = $(this).parent().parent().parent();
+      item_value = $tr.find(".grn_item").val();
+      console.log(item_value);
+      if (items.includes(parseInt(item_value))) {
+        $.notify("item exists");
+        $tr.find(".grn_item").val(0);
+      } else {
+        items.push(parseInt(item_value));
       }
     });
-  });
 
+    console.log(items);
 
-  // when grn item is clicked
-  let items = [];
-  $("body").on("change", ".grn_item", function(e){
-    $tr =  $(this).parent().parent().parent();
-    item_value = $tr.find(".grn_item").val();
-    console.log(item_value);
-    if(items.includes(parseInt(item_value))){
-        $.notify("item exists");
-        $tr.find('.grn_item').val(0);
-    }
-    else{
-        items.push(parseInt(item_value));
-    }
-  });
+    $("body").on("click", "#repeat", function () {
+      $duplicate = $(".duplicateMe");
+      $duplicate.find("span").remove();
+      var clone = $duplicate.html();
+      $(".duplicateMe")
+        .parent()
+        .append('<div class="row duplicateMe">' + clone + "</div>");
+      $(this)
+        .parent()
+        .append(
+          '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
+        );
+      $(this).remove();
+      $duplicate.removeClass("duplicateMe");
+    });
+    //by clicking repeat button get individual .grn item value
 
-  console.log(items);
+    // Array to store selected grn_item values
+    var selectedGrnItems = [];
 
+    // Event handler for grn_item selection
 
-  $("body").on("click", "#repeat", function () {
-    $duplicate = $(".duplicateMe");
-    $duplicate.find("span").remove();
-    var clone = $duplicate.html();
-    $(".duplicateMe").parent().append('<div class="row duplicateMe">' + clone + "</div>");
-    $(this).parent().append(
-        '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
-      );
-    $(this).remove();
-    $duplicate.removeClass("duplicateMe");
-  });
+    // Event handler for grn_item selection
+    $("body").on("change", ".grn_item", function () {
+      var grnItemValue = $(this).val();
+      var $row = $(this).closest(".duplicateMe");
 
-  // Remove Form data
-  $("body").on("click", "#remove", function () {
-    $tr =  $(this).parent().parent().parent();
-    item_value = $tr.find(".grn_item").val();
-    if(items.includes(parseInt(item_value))){
+      if (
+        grnItemValue !== "0" &&
+        grnItemValue !== null &&
+        grnItemValue !== undefined
+      ) {
+        // Add selected grn_item value to the array
+        selectedGrnItems.push(grnItemValue);
+      } else {
+        // Remove selected grn_item value from the array
+        var index = selectedGrnItems.indexOf(grnItemValue);
+        if (index !== -1) {
+          selectedGrnItems.splice(index, 1);
+        }
+      }
+
+      // Log the selected grn_item values
+      console.log("Selected grn_item values:", selectedGrnItems);
+    });
+
+    // Event handler for repeat button click
+    $("body").on("click", "#repeat", function () {
+      var $duplicate = $(this).closest(".duplicateMe").clone();
+      $duplicate.find(".grn_item").val("0"); // Reset the grn_item value in the duplicated row
+
+      // Append the duplicated row after the last duplicateMe row
+      $(".duplicateMe:last").after($duplicate);
+
+      // Get all grn_item values after the repeat button is pressed
+      var grnItemValues = $(".grn_item")
+        .map(function () {
+          return $(this).val();
+        })
+        .get();
+
+      // Update the selectedGrnItems array with the new grn_item values
+      selectedGrnItems = grnItemValues;
+      items = items.filter((item) => {
+        return grnItemValues.includes(item.toString());
+      });
+      console.log("items", items);
+      // Log the grn_item values
+      console.log("GRN Item values:", grnItemValues);
+
+      // Log the updated selectedGrnItems array
+      console.log("Selected GRN Items:", selectedGrnItems);
+    });
+    // Remove Form data
+    $("body").on("click", "#remove", function () {
+      $tr = $(this).parent().parent().parent();
+      item_value = $tr.find(".grn_item").val();
+      if (items.includes(parseInt(item_value))) {
         items.splice(parseInt(item_value), 1);
-    }
-    $(this).parent().parent().remove();
+      }
+      $(this).parent().parent().remove();
+    });
   });
 </script>
 {% endblock %}
