@@ -30,9 +30,10 @@ class LoginView(View):
                     messages.success(request, message)
                     return redirect("dashboard")
                 else:
+                    messages.warning(request, "No user found!")
                     return redirect("login")
             else:
-                print("login failed")
+                messages.warning(request, "email or password is missing!")
                 return redirect("login")
         except Exception as e:
             messages.warning(request, e.args[0])
@@ -46,32 +47,37 @@ class RegistrationView(DashboardView):
         return render(request, self.template_name)
 
     def post(self, request):
-        firstName = request.POST.get("firstName")
-        lastName = request.POST.get("lastName")
-        email = request.POST.get("email")
-        passwordOne = request.POST.get("passwordOne")
-        passwordTwo = request.POST.get("passwordTwo")
-        username = firstName + lastName
-        lastLogin = datetime.now()
-        dateJoined = datetime.now()
-        if passwordOne == passwordTwo:
-            user = AuthUser(
-                username=username,
-                first_name=firstName,
-                last_name=lastName,
-                email=email,
-                is_superuser=0,
-                is_staff=0,
-                password=passwordOne,
-                last_login=lastLogin,
-                date_joined=dateJoined,
-                is_active=1,
-            )
-            user.save()
-            return redirect("login")
-        else:
-            message = "Password didnot matched!"
-            messages.warning(request, message)
+        try:
+            firstName = request.POST.get("firstName")
+            lastName = request.POST.get("lastName")
+            email = request.POST.get("email")
+            passwordOne = request.POST.get("passwordOne")
+            passwordTwo = request.POST.get("passwordTwo")
+            username = firstName + lastName
+            lastLogin = datetime.now()
+            dateJoined = datetime.now()
+            if passwordOne == passwordTwo:
+                user = AuthUser(
+                    username=username,
+                    first_name=firstName,
+                    last_name=lastName,
+                    email=email,
+                    is_superuser=0,
+                    is_staff=0,
+                    password=passwordOne,
+                    last_login=lastLogin,
+                    date_joined=dateJoined,
+                    is_active=1,
+                )
+                user.save()
+                messages.success(request, "Successfully registered, now login.")
+                return redirect("login")
+            else:
+                message = "Password didnot matched!"
+                messages.warning(request, message)
+                return render(request, self.template_name)
+        except Exception as e:
+            messages.warning(request, e.args[0])
             return render(request, self.template_name)
 
 

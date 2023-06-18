@@ -11,7 +11,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
 
-    <title>SB Admin 2 - Register</title>
+    <title>Register</title>
 
     <!-- Custom fonts for this template-->
     <link
@@ -26,6 +26,7 @@
 
     <!-- Custom styles for this template-->
     <link href="{% static 'css/sb-admin-2.min.css' %}" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css">
   </head>
 
   <body class="bg-gradient-primary">
@@ -99,19 +100,8 @@
                   <button class="btn btn-primary btn-user btn-block">
                     Register Account
                   </button>
-                  <hr />
                 </form>
-                <hr />
-                <div class="text-center">
-                  <a class="small" href="forgot-password.html"
-                    >Forgot Password?</a
-                  >
-                </div>
-                <div class="text-center">
-                  <a class="small" href="{% url 'login' %}"
-                    >Already have an account? Login!</a
-                  >
-                </div>
+
               </div>
             </div>
           </div>
@@ -128,5 +118,18 @@
 
     <!-- Custom scripts for all pages-->
     <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"
+      defer
+    ></script>
+    <script>
+      $( document ).ready(function() {
+          {% if messages %}
+              {% for message in messages %}
+                  toastr.{{ message.tags }}('{{ message }}');
+              {% endfor %}
+          {% endif %}
+      });
+    </script>
   </body>
 </html>
