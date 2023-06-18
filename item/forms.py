@@ -1,5 +1,6 @@
 from django import forms
-from .models import ItemType, Item, Uom
+
+from .models import Item, ItemType, Uom
 
 
 class ItemTypeForm(forms.ModelForm):

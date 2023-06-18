@@ -1,4 +1,5 @@
 from django.db import models
+
 from item.models import InventoryBaseModel
 
 
@@ -10,4 +11,4 @@ class Store(InventoryBaseModel):
         return self.name
 
     class Meta:
-        db_table = 'store'
+        db_table = "store"

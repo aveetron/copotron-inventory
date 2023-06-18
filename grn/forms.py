@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Grn, GrnDetails, Stock, StockOut
 
 
@@ -21,7 +22,6 @@ class StockForms(forms.ModelForm):
 
 
 class StockOutForms(forms.ModelForm):
-
     class Meta:
         model = StockOut
         fields = "__all__"

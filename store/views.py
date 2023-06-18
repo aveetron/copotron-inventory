@@ -1,14 +1,13 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
-from django.views.generic import View
 from django.contrib import messages
-from .models import Store
-from .forms import StoreForm
-from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, QueryDict
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect, JsonResponse, QueryDict
+from django.shortcuts import render
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import View
 
+from .forms import StoreForm
+from .models import Store
 
 
 class StoreView(View):
@@ -20,7 +19,6 @@ class StoreView(View):
         stores = Store.objects.all().order_by("-id")
         context = {"stores": stores}
         return render(request, self.template_name, context)
-
 
     def post(self, request):
         try:
@@ -45,7 +43,7 @@ class StoreView(View):
             return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(login_required, name="dispatch")
 class StoreDetailsView(View):
     form_class = StoreForm
     template_name = "store.html"
@@ -53,7 +51,7 @@ class StoreDetailsView(View):
     @csrf_exempt
     def get(self, request):
         store = Store.objects.filter(id=request.GET.get("id")).values()
-        return JsonResponse({'store': list(store)})
+        return JsonResponse({"store": list(store)})
 
     def post(self, request):
         try:
@@ -61,7 +59,9 @@ class StoreDetailsView(View):
             store = Store.objects.get(id=payload.get("id"))
             store_serializer = self.form_class(payload, instance=store)
             if store_serializer.is_valid():
-                if Store.objects.filter(name__iexact=store_serializer.data["name"]).exclude(id=payload.get("id")):
+                if Store.objects.filter(
+                    name__iexact=store_serializer.data["name"]
+                ).exclude(id=payload.get("id")):
                     message = "store already exists"
                     messages.warning(request, message)
                     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -85,6 +85,6 @@ class StoreDetailsView(View):
             store_id = payload.get("id")
             store = Store.objects.get(id=store_id)
             store.delete()
-            return JsonResponse({'delete': True})
+            return JsonResponse({"delete": True})
         except Exception as e:
             return JsonResponse({"delete": e.args[0]})

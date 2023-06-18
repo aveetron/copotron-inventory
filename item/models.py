@@ -27,12 +27,14 @@ class ItemType(InventoryBaseModel):
         return self.name
 
     class Meta:
-        db_table = 'item_type'
+        db_table = "item_type"
 
 
 class Item(InventoryBaseModel):
     item_code = models.CharField(max_length=50, null=True, blank=True)
-    item_type = models.ForeignKey(ItemType, on_delete=models.CASCADE, null=True, blank=True)
+    item_type = models.ForeignKey(
+        ItemType, on_delete=models.CASCADE, null=True, blank=True
+    )
     name = models.CharField(max_length=100, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     uom = models.ForeignKey(Uom, on_delete=models.CASCADE, null=True, blank=True)
@@ -41,4 +43,4 @@ class Item(InventoryBaseModel):
         return self.name
 
     class Meta:
-        db_table = 'item'
+        db_table = "item"

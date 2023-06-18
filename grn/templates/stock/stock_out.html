@@ -110,10 +110,10 @@
                             name="item"
                             required
                           >
-                            <option selected disabled>Select Item</option>
+                            <option value="" selected disabled>Select Item</option>
                             {% for stock in stocks %}
                             <option value="{{stock.id}}">
-                              {{stock.item.name}}
+                              {{stock.item.name}}: {{stock.item.description}}: {{stock.item.uom.name}}
                             </option>
                             {% endfor %}
                           </select>
@@ -136,7 +136,6 @@
                           <input
                             type="text"
                             name="remarks"
-                            required="required"
                             class="form-control remarks"
                             placeholder="reason for stock out"
                           />
