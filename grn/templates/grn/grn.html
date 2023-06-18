@@ -110,8 +110,8 @@
                     class="font-weight-bold text-primary"
                     >Store</label
                   >
-                  <select id="store" class="form-control" name="store">
-                    <option selected disabled>Select Store</option>
+                  <select id="store" class="form-control" name="store" required>
+                    <option value="" selected disabled>Select Store</option>
                     {% for store in stores %}
                     <option value="{{store.id}}">{{store.name}}</option>
                     {% endfor %}
@@ -131,7 +131,7 @@
                             name="item"
                             required
                           >
-                            <option value="0" selected disabled>
+                            <option value="" selected disabled>
                               Select Item
                             </option>
                             {% for item in items %}
@@ -286,103 +286,23 @@
       });
     });
 
-    // when grn item is clicked
-    let items = [];
-    $("body").on("change", ".grn_item", function (e) {
-      $tr = $(this).parent().parent().parent();
-      item_value = $tr.find(".grn_item").val();
-      console.log(items);
-      console.log(item_value);
-      if (items.includes(parseInt(item_value))) {
-        $.notify("item exists");
-        return;
-        } else {
-        items.push(parseInt(item_value));
-      }
-    });
-
-    console.log(items);
-
     $("body").on("click", "#repeat", function () {
-      $duplicate = $(".duplicateMe");
-      $duplicate.find("span").remove();
-      var clone = $duplicate.html();
-      $(".duplicateMe")
-        .parent()
-        .append('<div class="row duplicateMe">' + clone + "</div>");
-      $(this)
-        .parent()
-        .append(
-          '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
-        );
-      $(this).remove();
-      $duplicate.removeClass("duplicateMe");
-    });
-    //by clicking repeat button get individual .grn item value
-
-    // Array to store selected grn_item values
-    var selectedGrnItems = [];
-
-    // Event handler for grn_item selection
-
-    // Event handler for grn_item selection
-    $("body").on("change", ".grn_item", function () {
-      var grnItemValue = $(this).val();
-      var $row = $(this).closest(".duplicateMe");
-
-      if (
-        grnItemValue !== "0" &&
-        grnItemValue !== null &&
-        grnItemValue !== undefined
-      ) {
-        // Add selected grn_item value to the array
-        selectedGrnItems.push(grnItemValue);
-      } else {
-        // Remove selected grn_item value from the array
-        var index = selectedGrnItems.indexOf(grnItemValue);
-        if (index !== -1) {
-          selectedGrnItems.splice(index, 1);
-        }
-      }
-
-      // Log the selected grn_item values
-      console.log("Selected grn_item values:", selectedGrnItems);
+        $duplicate = $(".duplicateMe");
+        $duplicate.find("span").remove();
+        var clone = $duplicate.html();
+        $(".duplicateMe")
+          .parent()
+          .append('<div class="row duplicateMe">' + clone + "</div>");
+        $(this)
+          .parent()
+          .append(
+            '<button type="button" class="btn btn-danger" style="margin-top: 1px;" id="remove"><i class="fa fa-minus"></i></button>'
+          );
+        $(this).remove();
+        $duplicate.removeClass("duplicateMe");
     });
 
-    // Event handler for repeat button click
-    $("body").on("click", "#repeat", function () {
-      var $duplicate = $(this).closest(".duplicateMe").clone();
-      $duplicate.find(".grn_item").val("0"); // Reset the grn_item value in the duplicated row
-
-      // Append the duplicated row after the last duplicateMe row
-      $(".duplicateMe:last").after($duplicate);
-
-      // Get all grn_item values after the repeat button is pressed
-      var grnItemValues = $(".grn_item")
-        .map(function () {
-          return $(this).val();
-        })
-        .get();
-
-      // Update the selectedGrnItems array with the new grn_item values
-      selectedGrnItems = grnItemValues;
-      items = items.filter((item) => {
-        return grnItemValues.includes(item.toString());
-      });
-      console.log("items", items);
-      // Log the grn_item values
-      console.log("GRN Item values:", grnItemValues);
-
-      // Log the updated selectedGrnItems array
-      console.log("Selected GRN Items:", selectedGrnItems);
-    });
-    // Remove Form data
     $("body").on("click", "#remove", function () {
-      $tr = $(this).parent().parent().parent();
-      item_value = $tr.find(".grn_item").val();
-      if (items.includes(parseInt(item_value))) {
-        items.splice(parseInt(item_value), 1);
-      }
       $(this).parent().parent().remove();
     });
   });

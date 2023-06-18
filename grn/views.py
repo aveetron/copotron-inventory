@@ -1,14 +1,14 @@
-from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.http import JsonResponse
+from django.shortcuts import HttpResponseRedirect, redirect, render
 from django.views import View
-from .forms import GrnForms, GrnDetailsForms, StockForms, StockOutForms
-from .models import Grn, GrnDetails, Stock, StockOut
+from django.views.decorators.csrf import csrf_exempt
+
 from item.models import Item
 from store.models import Store
-from django.contrib import messages
-from django.shortcuts import HttpResponseRedirect
-from django.db.models import Sum
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+
+from .forms import GrnDetailsForms, GrnForms, StockForms, StockOutForms
+from .models import Grn, GrnDetails, Stock, StockOut
 
 
 class GrnView(View):
@@ -19,7 +19,7 @@ class GrnView(View):
         grns = Grn.objects.all().order_by("-id")
         store = Store.objects.all().order_by("-id")
         item = Item.objects.all().order_by("-id")
-        context = {'grns': grns, 'stores': store, 'items': item}
+        context = {"grns": grns, "stores": store, "items": item}
         return render(request, self.template_name, context)
 
     def post(self, request):
@@ -33,14 +33,18 @@ class GrnView(View):
             # save
             grn = grn_serializer.save()
             grn.code = grn_code
-            item = payload.getlist('item')
-            quantity = payload.getlist('quantity')
-            unit_price = payload.getlist('unit_price')
+            item = payload.getlist("item")
+            quantity = payload.getlist("quantity")
+            unit_price = payload.getlist("unit_price")
             zipped = zip(item, quantity, unit_price)
             total_price = 0
             for item, quantity, unit_price in zipped:
-                data = {'grn': grn.id, 'item': item,
-                        'quantity': quantity, 'unit_price': unit_price}
+                data = {
+                    "grn": grn.id,
+                    "item": item,
+                    "quantity": quantity,
+                    "unit_price": unit_price,
+                }
 
                 grn_details = GrnDetailsForms(data)
                 if grn_details.is_valid():
@@ -61,8 +65,11 @@ class GrnView(View):
                     stock.quantity = stock.quantity + grn_detail.quantity
                     stock.save()
                 else:
-                    data = {'item': grn_detail.item.id, 'store': grn.store.id,
-                            'quantity': grn_detail.quantity}
+                    data = {
+                        "item": grn_detail.item.id,
+                        "store": grn.store.id,
+                        "quantity": grn_detail.quantity,
+                    }
                     stock_serializer = StockForms(data)
                     if stock_serializer.is_valid():
                         stock_serializer.save()
@@ -80,19 +87,23 @@ class GrnView(View):
 
 
 class GrnDetailView(View):
-
     @csrf_exempt
     def get(self, request):
-        grn_id = request.GET.get('id')
+        grn_id = request.GET.get("id")
         grn = Grn.objects.filter(id=request.GET.get("id")).values()
-        storeName = Store.objects.filter(id=grn[0]['store_id']).values()
+        storeName = Store.objects.filter(id=grn[0]["store_id"]).values()
 
         grn_details = GrnDetails.objects.filter(grn=grn_id).values()
         for grn_detail in grn_details:
-            itemName = Item.objects.filter(
-                id=grn_detail['item_id']).values()
-            grn_detail['item_id'] = itemName[0]['name']
-        return JsonResponse({'grn': list(grn), "grn_details": list(grn_details), "storeName": list(storeName)})
+            itemName = Item.objects.filter(id=grn_detail["item_id"]).values()
+            grn_detail["item_id"] = itemName[0]["name"]
+        return JsonResponse(
+            {
+                "grn": list(grn),
+                "grn_details": list(grn_details),
+                "storeName": list(storeName),
+            }
+        )
 
 
 class StockView(View):
@@ -107,11 +118,11 @@ class StockView(View):
 class StockDetailsView(View):
     @csrf_exempt
     def get(self, request):
-        stock_id = request.GET.get('id')
+        stock_id = request.GET.get("id")
         print(stock_id)
         stocks = Stock.objects.filter(id=stock_id).values()
 
-        return JsonResponse({'stocks': list(stocks)})
+        return JsonResponse({"stocks": list(stocks)})
 
 
 class StockOutView(View):
@@ -126,13 +137,12 @@ class StockOutView(View):
 
     def post(self, request):
         payload = request.POST
-        stockList = payload.getlist('item')
-        quantityList = payload.getlist('quantity')
-        remarksList = payload.getlist('remarks')
+        stockList = payload.getlist("item")
+        quantityList = payload.getlist("quantity")
+        remarksList = payload.getlist("remarks")
         zipped = zip(stockList, quantityList, remarksList)
-        total_price = 0
         for stock, quantity, remarks in zipped:
-            data = {'stock': stock, 'quantity': quantity, 'remarks': remarks}
+            data = {"stock": stock, "quantity": quantity, "remarks": remarks}
             stock_out_serializer = StockOutForms(data)
             if stock_out_serializer.is_valid():
                 stock_out_serializer.save()
@@ -153,7 +163,6 @@ class StockOutView(View):
 
 
 class StockReturnView(View):
-
     def get(self, request, stock_out_id):
         stock_out = StockOut.objects.filter(id=stock_out_id).last()
         stock = Stock.objects.filter(id=stock_out.stock.id).last()

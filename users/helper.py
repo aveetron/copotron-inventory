@@ -1,5 +1,4 @@
 from django.shortcuts import redirect
-from django.views import View
 
 
 def check_login():

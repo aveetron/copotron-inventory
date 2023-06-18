@@ -1,13 +1,14 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
-from .forms import ItemTypeForm, ItemForm, UomForm
-from django.views.generic import View
-from .models import Item, ItemType, Uom
-from grn.models import *
-from store.models import *
 from django.contrib import messages
+from django.http import HttpResponseRedirect, JsonResponse, QueryDict
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse, QueryDict
+from django.views.generic import View
+
+from grn.models import Grn, Stock, StockOut
+from store.models import Store
+
+from .forms import ItemForm, ItemTypeForm, UomForm
+from .models import Item, ItemType, Uom
 
 
 class DashboardView(View):
@@ -20,14 +21,18 @@ class DashboardView(View):
             total_stock = Stock.objects.all().count()
             total_store = Store.objects.all().count()
             total_stock_out = StockOut.objects.all().count()
-            context = {"total_item": total_item, "total_grn": total_grn,
-                       "total_stock": total_stock, "total_store": total_store,
-                       "total_stock_out": total_stock_out}
+            context = {
+                "total_item": total_item,
+                "total_grn": total_grn,
+                "total_stock": total_stock,
+                "total_store": total_store,
+                "total_stock_out": total_stock_out,
+            }
             return render(request, self.template_name, context)
         except Exception as e:
             messgae = e.args[0]
             messages.warning(request, messgae)
-            return redirect('login')
+            return redirect("login")
 
 
 class ItemTypeView(View):
@@ -45,7 +50,9 @@ class ItemTypeView(View):
             payload = request.POST
             item_type_serializer = self.form_class(payload)
             if item_type_serializer.is_valid():
-                if ItemType.objects.filter(name__iexact=item_type_serializer.data["name"]):
+                if ItemType.objects.filter(
+                    name__iexact=item_type_serializer.data["name"]
+                ):
                     message = "item type already exists"
                     messages.warning(request, message)
                     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -80,8 +87,9 @@ class ItemTypeDetailsView(View):
             item_type = ItemType.objects.get(id=payload.get("id"))
             item_type_serializer = self.form_class(payload, instance=item_type)
             if item_type_serializer.is_valid():
-                if ItemType.objects.filter(name__iexact=item_type_serializer.data["name"]).exclude(
-                        id=payload.get("id")):
+                if ItemType.objects.filter(
+                    name__iexact=item_type_serializer.data["name"]
+                ).exclude(id=payload.get("id")):
                     message = "item type already exists"
                     messages.warning(request, message)
                     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -104,7 +112,7 @@ class ItemTypeDetailsView(View):
             item_type_id = payload.get("id")
             item_type = ItemType.objects.get(id=item_type_id)
             item_type.delete()
-            return JsonResponse({'delete': True})
+            return JsonResponse({"delete": True})
         except Exception as e:
             message = e.args[0]
             messages.warning(request, message)
@@ -127,7 +135,7 @@ class ItemView(View):
         item_data = request.POST.copy()
         item_code = Item.objects.all().count() + 1
         item_code = "Item-" + str(item_code).zfill(9)
-        item_data['item_code'] = item_code
+        item_data["item_code"] = item_code
         item_form = self.form_class(item_data)
         if item_form.is_valid():
             item_form.save()
@@ -155,7 +163,9 @@ class ItemDetailView(View):
             item = Item.objects.get(id=payload.get("id"))
             item_serializer = self.form_class(payload, instance=item)
             if item_serializer.is_valid():
-                if Item.objects.filter(name__iexact=item_serializer.data["name"]).exclude(id=payload.get("id")):
+                if Item.objects.filter(
+                    name__iexact=item_serializer.data["name"]
+                ).exclude(id=payload.get("id")):
                     message = "item already exists"
                     messages.warning(request, message)
                     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -179,7 +189,7 @@ class ItemDetailView(View):
             item_id = payload.get("id")
             item = Item.objects.get(id=item_id)
             item.delete()
-            return JsonResponse({'delete': True})
+            return JsonResponse({"delete": True})
         except Exception as e:
             return JsonResponse({"delete": e.args[0]})
 
@@ -231,7 +241,9 @@ class UomDetailsView(View):
             uom = Uom.objects.get(id=payload.get("id"))
             uom_serializer = self.form_class(payload, instance=uom)
             if uom_serializer.is_valid():
-                if Uom.objects.filter(name__iexact=uom_serializer.data["name"]).exclude(id=payload.get("id")):
+                if Uom.objects.filter(name__iexact=uom_serializer.data["name"]).exclude(
+                    id=payload.get("id")
+                ):
                     message = "Uom already exists"
                     messages.warning(request, message)
                     return HttpResponseRedirect(request.META.get("HTTP_REFERER"))
@@ -254,7 +266,7 @@ class UomDetailsView(View):
             uom_id = payload.get("id")
             uom = Uom.objects.get(id=uom_id)
             uom.delete()
-            return JsonResponse({'delete': True})
+            return JsonResponse({"delete": True})
         except Exception as e:
             message = e.args[0]
             messages.warning(request, message)

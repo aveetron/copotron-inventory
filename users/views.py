@@ -1,15 +1,14 @@
-from django.shortcuts import render, redirect
-import datetime
 from datetime import datetime
-from users.models import AuthUser
-from django.contrib.auth import authenticate
+
+from django.contrib import auth, messages
 from django.contrib.auth import login as auth_login
-from django.contrib import auth
-from django.contrib import messages
-from item.views import DashboardView
-from django.views.generic import View
-from django.views.decorators.csrf import *
 from django.http import JsonResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import View
+
+from item.views import DashboardView
+from users.models import AuthUser
 
 
 class LoginView(View):
@@ -35,9 +34,8 @@ class LoginView(View):
             else:
                 print("login failed")
                 return redirect("login")
-        except:
-            message = "login failed"
-            messages.warning(request, message)
+        except Exception as e:
+            messages.warning(request, e.args[0])
             return redirect("login")
 
 
@@ -72,7 +70,7 @@ class RegistrationView(DashboardView):
             user.save()
             return redirect("login")
         else:
-            message = 'Password didnot matched!'
+            message = "Password didnot matched!"
             messages.warning(request, message)
             return render(request, self.template_name)
 
@@ -88,16 +86,14 @@ class UserView(View):
 
     def get(self, request):
         allAuthUser = AuthUser.objects.all()
-        context = {
-            'allAuthUser': allAuthUser
-        }
+        context = {"allAuthUser": allAuthUser}
         return render(request, self.template_name, context)
 
     @csrf_exempt
     def post(self, request):
-        id = request.POST.get('id')
+        id = request.POST.get("id")
         roleInfo = AuthUser.objects.filter(id=id).values()
-        return JsonResponse({'roleInfo': list(roleInfo)})
+        return JsonResponse({"roleInfo": list(roleInfo)})
 
 
 def loginPage(request):
@@ -114,7 +110,5 @@ def logout(request):
 
 def userList(request):
     allAuthUser = AuthUser.objects.all()
-    context = {
-        'allAuthUser': allAuthUser
-    }
-    return render(request, 'adminUserList.html', context)
+    context = {"allAuthUser": allAuthUser}
+    return render(request, "adminUserList.html", context)
