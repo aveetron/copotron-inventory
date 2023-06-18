@@ -1,4 +1,4 @@
-FROM python:3
+FROM python:3.10-slim
 # maintainer label added
 MAINTAINER Avee Chakraborty
 # changed to pythonunbuffered
