@@ -291,11 +291,12 @@
     $("body").on("change", ".grn_item", function (e) {
       $tr = $(this).parent().parent().parent();
       item_value = $tr.find(".grn_item").val();
+      console.log(items);
       console.log(item_value);
       if (items.includes(parseInt(item_value))) {
         $.notify("item exists");
-        $tr.find(".grn_item").val(0);
-      } else {
+        return;
+        } else {
         items.push(parseInt(item_value));
       }
     });
