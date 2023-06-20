@@ -1,0 +1,45 @@
+Welcome to Copotron Inventory!
+------------------------------
+Copotron Inventory Management System is a comprehensive and efficient 
+software solution designed to streamline and optimize the process of 
+managing inventory in various industries. With its user-friendly interface 
+and powerful features, Copotron enables businesses to effectively track, 
+monitor, and control their inventory levels, ensuring smooth operations 
+and minimizing stock-related challenges.
+
+
+Run project
+-------------
+1. Download the zip file and unzip
+2. In the project directory, create a virtual environment
+    python3 -m venv venv
+
+3. Now Activate this environment
+    source venv/bin/activate
+
+4. After activating the virtual environment, install the requirements
+    pip install -r requirements.txt
+
+5. Now run database migration commands
+    python manage.py makemigrations
+    python manage.py migrate
+
+6. Finally run this project
+    python manage.py runserver
+
+
+
+Run project using Docker
+------------------------
+1. Download the zip file and unzip
+2. In the project directory and run
+    docker-compose build
+    docker-compose up
+
+3. For running the project in detach mood run this command (optional)
+    docker-compose up -d
+
+
+
+need any help, feel free to knock 'copotronlab@gmail.com'
+Thank you
