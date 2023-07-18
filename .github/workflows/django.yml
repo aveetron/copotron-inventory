@@ -30,3 +30,4 @@ jobs:
         pip install flake8
         flake8 .
         python manage.py test
+        git push origin main:user
