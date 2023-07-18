@@ -13,7 +13,7 @@ from users.models import AuthUser
 
 class LoginView(View):
     """
-        pipeline test
+        pipeline test t2
     """
     template_name = "users/login.html"
 
