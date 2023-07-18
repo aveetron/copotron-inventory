@@ -12,6 +12,9 @@ from users.models import AuthUser
 
 
 class LoginView(View):
+    """
+        pipeline test
+    """
     template_name = "users/login.html"
 
     def get(self, request):
