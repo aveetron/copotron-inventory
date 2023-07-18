@@ -30,4 +30,10 @@ jobs:
         pip install flake8
         flake8 .
         python manage.py test
-        git push origin main:user
+    - name: push codes to user
+      run: |
+        git config user.name "aveetron"
+        git config user.email "aveechakra@gmail.com"
+        git checkout user
+        git merge main --no-edit
+        git push origin user
